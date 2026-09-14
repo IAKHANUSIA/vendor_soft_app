@@ -1,0 +1,21 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+publish/
+*.exe
+*.dll
+*.pdb
+
+# IDE / Editor
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

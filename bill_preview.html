@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <title>સંપૂર્ણ બિલ ફોર્મેટ પ્રિવ્યૂ કેટલોગ - Vendor Soft</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Noto+Sans+Gujarati:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', 'Noto Sans Gujarati', sans-serif; }
+    body { background: #0b1329; color: #f8fafc; padding: 20px; }
+    .header-bar { text-align: center; margin-bottom: 15px; }
+    .header-bar h1 { font-size: 24px; color: #38bdf8; margin-bottom: 5px; }
+    .header-bar p { font-size: 14px; color: #94a3b8; }
+    
+    .logo-tester-bar {
+      max-width: 900px; margin: 0 auto 20px auto; background: rgba(30, 41, 59, 0.85);
+      border: 1px solid #334155; border-radius: 10px; padding: 10px 16px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+
+    .nav-tabs { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+    .tab-btn {
+      padding: 7px 14px; border-radius: 8px; border: 1px solid #334155;
+      background: #1e293b; color: #94a3b8; font-weight: 600; cursor: pointer; font-size: 13px;
+      transition: all 0.2s ease;
+    }
+    .tab-btn:hover { background: #273549; color: #fff; }
+    .tab-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; box-shadow: 0 0 15px rgba(56,189,248,0.35); }
+    
+    .format-view { display: none; }
+    .format-view.active { display: block; }
+
+    /* Paper simulation */
+    .paper-sheet {
+      background: #ffffff; color: #000000; width: 790px; min-height: 1115px; margin: 0 auto 30px auto;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6); border-radius: 4px; padding: 10px;
+      position: relative; box-sizing: border-box;
+    }
+    .format-info-badge {
+      text-align: center; font-size: 12.5px; color: #475569; margin-bottom: 10px; padding-bottom: 8px;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-bar">
+    <h1>📄 Vendor Soft - સંપૂર્ણ મલ્ટી-ટેમ્પલેટ બિલ પ્રિવ્યૂ કેટલોગ</h1>
+    <p>A4 ૪-ઇન-૧ (નવા Image 1, 2, 3 આધારિત ફોર્મેટ્સ), ૩-ઇન-૧ અને ૨-ઇન-૧ લાઈવ પ્રિવ્યૂ સાથે</p>
+  </div>
+
+  <!-- Interactive Company Logo Tester Bar -->
+  <div class="logo-tester-bar">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="font-size:18px;">🖼️</span>
+      <div>
+        <b style="color:#38bdf8; font-size:13.5px;">કંપની / એજન્સી લોગો ટેસ્ટિંગ (Custom Logo Preview)</b>
+        <div style="font-size:11.5px; color:#94a3b8;">અહીંથી લોગો પસંદ કરીને બધા બિલ પર કેવો દેખાય છે તે તરત ચકાસો:</div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div id="previewLogoBox" style="width:55px; height:36px; background:#ffffff; border:1px solid #cbd5e1; border-radius:4px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+        <span id="previewLogoTxt" style="font-size:9px; color:#64748b;">No Logo</span>
+        <img id="previewLogoImg" src="" style="display:none; max-width:100%; max-height:100%; object-fit:contain;">
+      </div>
+      <label class="tab-btn" style="cursor:pointer; background:#0284c7; color:#fff; border:none; padding:6px 12px; font-size:12px;">
+        📁 લોગો ફાઇલ પસંદ કરો
+        <input type="file" accept="image/*" style="display:none;" onchange="handleTestLogoUpload(event)">
+      </label>
+      <button id="removeTestLogoBtn" class="tab-btn" style="display:none; background:#ef4444; color:#fff; border:none; padding:6px 10px; font-size:12px;" onclick="clearTestLogo()">
+        🗑️ દૂર કરો
+      </button>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchFormat(1)">✂️ ૪A: પરફેક્ટ ક્રેડિટ મેમો (Image 1)</button>
+    <button class="tab-btn" onclick="switchFormat(2)">🌊 ૪B: ઓશન બ્લુ (Image 2 TL)</button>
+    <button class="tab-btn" onclick="switchFormat(3)">📜 ૪C: વિન્ટેજ પાર્ચમેન્ટ (Image 2 TR)</button>
+    <button class="tab-btn" onclick="switchFormat(4)">🌸 ૪D: વાઇબ્રન્ટ મેજેન્ટા (Image 2 BL)</button>
+    <button class="tab-btn" onclick="switchFormat(5)">🌿 ૪E: ઇકો ફ્રેશ ગ્રીન (Image 2 BR)</button>
+    <button class="tab-btn" onclick="switchFormat(6)">📰 ૪F: મોનોક્રોમ ક્લીન B&W (Image 3)</button>
+    <button class="tab-btn" onclick="switchFormat(7)">✂️ ૪G: સ્ટાન્ડર્ડ B/W મેમો</button>
+    <button class="tab-btn" onclick="switchFormat(8)">✂️ ૪H: મોડર્ન કાર્ડ</button>
+    <button class="tab-btn" onclick="switchFormat(9)">✂️ ૪I: સ્લિપ + Stub પાવતી</button>
+    <button class="tab-btn" onclick="switchFormat(10)">📑 ૩-ઇન-૧ વાઇડ</button>
+    <button class="tab-btn" onclick="switchFormat(11)">📑 ૩-ઇન-૧ Stub</button>
+    <button class="tab-btn" onclick="switchFormat(12)">📑 ૨-ઇન-૧ વિગતવાર</button>
+    <button class="tab-btn" onclick="switchFormat(13)">📑 ૨-ઇન-૧ મોડર્ન</button>
+    <button class="tab-btn" onclick="switchFormat(14)">🧾 ૨-ઇન-૧ પાવતી સાથે</button>
+  </div>
+
+  <!-- 1. 4A: Perfect Credit Memo (Image 1) -->
+  <div id="format1" class="format-view active">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૪-ઇન-૧ ફોર્મેટ ૪A (પરફેક્ટ ક્રેડિટ મેમો - Image 1 ઓરિજિનલ)</b> - રેડ પિલ બોક્સ ("NIZAM TAI"), ગુજરાતી શરતો, GPay & QR, નેટ એમાઉન્ટ શેડ
+      </div>
+      <div class="a4-grid-4in1 a4-cut-guides" id="grid4A_Perfect"></div>
+    </div>
+  </div>
+
+  <!-- 2. 4B: Ocean Blue (Image 2 Top-Left) -->
+  <div id="format2" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૪-ઇન-૧ ફોર્મેટ ૪B (મોડર્ન ઓશન બ્લુ - Image 2 Top-Left)</b> - ન્યૂઝપેપર આઇકન, ૫-કોલમ ટેબલ, UPI બેજીસ, Thank You! સ્ક્રિપ્ટ
+      </div>
+      <div class="a4-grid-4in1 a4-cut-guides" id="grid4B_OceanBlue"></div>
+    </div>
+  </div>
+
+  <!-- 3. 4C: Vintage Parchment (Image 2 Top-Right) -->
+  <div id="format3" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૪-ઇન-૧ ફોર્મેટ ૪C (વિન્ટેજ પાર્ચમેન્ટ / બ્રાઉન - Image 2 Top-Right)</b> - એસ્પ્રેસો થીમ, કોફી-પેપર આર્ટ, સાઇડ QR કાર્ડ, બોટમ બાર
+      </div>
+      <div class="a4-grid-4in1 a4-cut-guides" id="grid4C_Vintage"></div>
+    </div>
+  </div>
+
+  <!-- 4. 4D: Vibrant Magenta Wave (Image 2 Bottom-Left) -->
+  <div id="format4" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૪-ઇન-૧ ફોર્મેટ ૪D (વાઇબ્રન્ટ મેજેન્ટા વેવ - Image 2 Bottom-Left)</b> - 3D News બેજ, ગુલાબી થીમ, Scan & Pay બોક્સ, સર્વિસ બેજીસ
+      </div>
+      <div class="a4-grid-4in1 a4-cut-guides" id="grid4D_Magenta"></div>
+    </div>
+  </div>
+
+  <!-- 5. 4E: Eco Fresh Green (Image 2 Bottom-Right) -->
+  <div id="format5" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૪-ઇન-૧ ફોર્મેટ ૪E (ઇકો ફ્રેશ ગ્રીન / નેચર - Image 2 Bottom-Right)</b> - ફ્રેશ એમરાલ્ડ બોટેનિકલ ગ્રીન થીમ, લીફ મોટિફ, ગ્રીન ટેબલ
+      </div>
+      <div class="a4-grid-4in1 a4-cut-guides" id="grid4E_EcoGreen"></div>
+    </div>
+  </div>
+
+  <!-- 6. 4F: Monochrome Clean B&W (Image 3) -->
+  <div id="format6" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૪-ઇન-૧ ફોર્મેટ ૪F (મોનોક્રોમ ક્લીન ન્યૂઝપેપર - Image 3)</b> - હાઇ સ્પીડ ઇંક-સેવિંગ B&W લેસર પ્રિન્ટર ફ્રેન્ડલી ૫-કોલમ ડિઝાઇન
+      </div>
+      <div class="a4-grid-4in1 a4-cut-guides" id="grid4F_CleanBW"></div>
+    </div>
+  </div>
+
+  <!-- 7. 4G: Classic B&W -->
+  <div id="format7" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૪-ઇન-૧ ફોર્મેટ ૪G (સ્ટાન્ડર્ડ B/W મેમો)</b>
+      </div>
+      <div class="a4-grid-4in1 a4-cut-guides" id="grid4G_Classic"></div>
+    </div>
+  </div>
+
+  <!-- 8. 4H: Modern Card -->
+  <div id="format8" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૪-ઇન-૧ ફોર્મેટ ૪H (મોડર્ન એલિગન્ટ કાર્ડ)</b>
+      </div>
+      <div class="a4-grid-4in1 a4-cut-guides" id="grid4H_Modern"></div>
+    </div>
+  </div>
+
+  <!-- 9. 4I: Stub -->
+  <div id="format9" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૪-ઇન-૧ ફોર્મેટ ૪I (સ્લિપ + ઉઘરાણી પાવતી Stub)</b>
+      </div>
+      <div class="a4-grid-4in1 a4-cut-guides" id="grid4I_Stub"></div>
+    </div>
+  </div>
+
+  <!-- 10. 3-in-1 Wide -->
+  <div id="format10" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૩-ઇન-૧ ફોર્મેટ ૩A (વાઇડ હોરિઝોન્ટલ લેજર સ્લિપ)</b>
+      </div>
+      <div class="a4-grid-3in1" id="grid3in1Wide"></div>
+    </div>
+  </div>
+
+  <!-- 11. 3-in-1 Side Stub -->
+  <div id="format11" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૩-ઇન-૧ ફોર્મેટ ૩B (સ્લિપ + સાઇડ ઉઘરાણી પહોંચ Stub)</b>
+      </div>
+      <div class="a4-grid-3in1" id="grid3in1Stub"></div>
+    </div>
+  </div>
+
+  <!-- 12. 2-in-1 Detailed -->
+  <div id="format12" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૨-ઇન-૧ ફોર્મેટ ૨A (વિગતવાર આઇટમાઇઝ્ડ હાફ પેજ બિલ)</b>
+      </div>
+      <div class="a4-grid-2in1" id="grid2in1Detailed"></div>
+    </div>
+  </div>
+
+  <!-- 13. 2-in-1 Modern Commercial -->
+  <div id="format13" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૨-ઇન-૧ ફોર્મેટ ૨B (પ્રીમિયમ કોમર્શિયલ ઇન્વોઇસ)</b>
+      </div>
+      <div class="a4-grid-2in1" id="grid2in1Modern"></div>
+    </div>
+  </div>
+
+  <!-- 14. 2-in-1 Counterfoil -->
+  <div id="format14" class="format-view">
+    <div class="paper-sheet">
+      <div class="format-info-badge">
+        📄 <b>A4 ૨-ઇન-૧ ફોર્મેટ ૨C (હાફ પેજ + નીચે સંપૂર્ણ પહોળાઈની પહોંચ)</b>
+      </div>
+      <div class="a4-grid-2in1" id="grid2in1Counterfoil"></div>
+    </div>
+  </div>
+
+  <script src="js/qrcode.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    let activeFormatNum = 1;
+
+    function switchFormat(num) {
+      activeFormatNum = num;
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        b.classList.toggle('active', i === (num - 1));
+      });
+      document.querySelectorAll('.format-view').forEach((v, i) => {
+        v.classList.toggle('active', i === (num - 1));
+      });
+    }
+
+    const demoFirm = {
+      name: "PERFECT NEWSPAPER SUPPLIERS",
+      ownerName: "NIZAM TAI",
+      address: "E-392, SANKALITNAGAR, JUHAPURA, Ahmedabad",
+      phone: "9825776607",
+      upiId: "9825776607@okaxis",
+      gstNo: "24AAECN1234F1Z5",
+      logo: ""
+    };
+
+    const demoItems = [
+      { id: 1, name: "GUJARAT SAMACHAR", price: 6.0 },
+      { id: 2, name: "TIMES OF INDIA", price: 5.5 },
+      { id: 3, name: "GUJARAT TODAY", price: 5.0 },
+      { id: 4, name: "DIVYA BHASKAR", price: 5.5 }
+    ];
+
+    const demoSalesmen = [
+      { id: 1, name: "REHAN" },
+      { id: 2, name: "MAJID" }
+    ];
+
+    const demoCustomers = [
+      { id: 3641, custNo: "3641", name: "AARIFBHAI", societyShort: "MANSURI SOC", address: "Mansuri Soc, Juhapura", mobile: "9824024923", sequenceNo: 1, salesmanId: 1, subscriptions: [1, 2] },
+      { id: 3642, custNo: "3642", name: "USMAN BHAI(12) SHOP", societyShort: "12 MANSURI SOC", address: "12 Mansuri Soc", mobile: "9256965535", sequenceNo: 2, salesmanId: 1, subscriptions: [3] },
+      { id: 3643, custNo: "3643", name: "DR, NAEEM BHAI 2 : SARIFA", societyShort: "SARIFABAD", address: "Sarifabad, Sarkhej", mobile: "9825159849", sequenceNo: 3, salesmanId: 1, subscriptions: [1, 4] },
+      { id: 3644, custNo: "3644", name: "IBRAHIM BHAI 3RD (R) (B)SAHIB", societyShort: "SAHIB SOC", address: "Sahib Soc, Juhapura", mobile: "9879984495", sequenceNo: 4, salesmanId: 1, subscriptions: [1] }
+    ];
+
+    const demoBills = [
+      { id: 101, billNo: "3641", customerId: 3641, customerName: "AARIFBHAI", monthYear: "2026-08", daysDelivered: 30, vacationDays: 0, vacationDeduction: 0, newspaperAmount: 287, currentAmount: 287, pastArrears: 50, deliveryCharge: 10, totalPayable: 347, deliverySequence: 1, paperBreakdown: [{ name: "GUJARAT SAMACHAR", daysCount: 30, totalCost: 158 }, { name: "TIMES OF INDIA", daysCount: 30, totalCost: 129 }] },
+      { id: 102, billNo: "3642", customerId: 3642, customerName: "USMAN BHAI(12) SHOP", monthYear: "2026-08", daysDelivered: 29, vacationDays: 0, vacationDeduction: 0, newspaperAmount: 174, currentAmount: 174, pastArrears: 0, deliveryCharge: 10, totalPayable: 184, deliverySequence: 2, paperBreakdown: [{ name: "GUJARAT TODAY", daysCount: 29, totalCost: 174 }] },
+      { id: 103, billNo: "3643", customerId: 3643, customerName: "DR, NAEEM BHAI 2 : SARIFA", monthYear: "2026-08", daysDelivered: 30, vacationDays: 0, vacationDeduction: 0, newspaperAmount: 312, currentAmount: 312, pastArrears: 30, deliveryCharge: 10, totalPayable: 352, deliverySequence: 3, paperBreakdown: [{ name: "GUJARAT SAMACHAR", daysCount: 30, totalCost: 158 }, { name: "DIVYA BHASKAR", daysCount: 30, totalCost: 154 }] },
+      { id: 104, billNo: "3644", customerId: 3644, customerName: "IBRAHIM BHAI 3RD (R) (B)SAHIB", monthYear: "2026-08", daysDelivered: 30, vacationDays: 0, vacationDeduction: 0, newspaperAmount: 158, currentAmount: 158, pastArrears: 0, deliveryCharge: 10, totalPayable: 168, deliverySequence: 4, paperBreakdown: [{ name: "GUJARAT SAMACHAR", daysCount: 30, totalCost: 158 }] }
+    ];
+
+    function handleTestLogoUpload(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        demoFirm.logo = evt.target.result;
+        const img = document.getElementById("previewLogoImg");
+        const txt = document.getElementById("previewLogoTxt");
+        const btn = document.getElementById("removeTestLogoBtn");
+        img.src = demoFirm.logo;
+        img.style.display = "block";
+        txt.style.display = "none";
+        btn.style.display = "inline-block";
+        renderAllMockups();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearTestLogo() {
+      demoFirm.logo = "";
+      const img = document.getElementById("previewLogoImg");
+      const txt = document.getElementById("previewLogoTxt");
+      const btn = document.getElementById("removeTestLogoBtn");
+      img.src = "";
+      img.style.display = "none";
+      txt.style.display = "block";
+      btn.style.display = "none";
+      renderAllMockups();
+    }
+
+    function renderAllMockups() {
+      const cutIcon = '<div class="a4-cut-center-icon">✂</div>';
+
+      // 1. 4A Perfect Credit Memo
+      const g4A = document.getElementById("grid4A_Perfect");
+      if (g4A) {
+        g4A.innerHTML = demoBills.map((b, i) => generatePerfectCreditMemo4in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("") + cutIcon;
+      }
+
+      // 2. 4B Ocean Blue
+      const g4B = document.getElementById("grid4B_OceanBlue");
+      if (g4B) {
+        g4B.innerHTML = demoBills.map((b, i) => generateOceanBlue4in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("") + cutIcon;
+      }
+
+      // 3. 4C Vintage Parchment
+      const g4C = document.getElementById("grid4C_Vintage");
+      if (g4C) {
+        g4C.innerHTML = demoBills.map((b, i) => generateVintageParchment4in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("") + cutIcon;
+      }
+
+      // 4. 4D Magenta Wave
+      const g4D = document.getElementById("grid4D_Magenta");
+      if (g4D) {
+        g4D.innerHTML = demoBills.map((b, i) => generateMagentaWave4in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("") + cutIcon;
+      }
+
+      // 5. 4E Eco Green
+      const g4E = document.getElementById("grid4E_EcoGreen");
+      if (g4E) {
+        g4E.innerHTML = demoBills.map((b, i) => generateEcoGreen4in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("") + cutIcon;
+      }
+
+      // 6. 4F Clean B&W
+      const g4F = document.getElementById("grid4F_CleanBW");
+      if (g4F) {
+        g4F.innerHTML = demoBills.map((b, i) => generateCleanBWNewspaper4in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("") + cutIcon;
+      }
+
+      // 7. 4G Standard B/W
+      const g4G = document.getElementById("grid4G_Classic");
+      if (g4G) {
+        g4G.innerHTML = demoBills.map((b, i) => generateBWSlipHTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("") + cutIcon;
+      }
+
+      // 8. 4H Modern
+      const g4H = document.getElementById("grid4H_Modern");
+      if (g4H) {
+        g4H.innerHTML = demoBills.map((b, i) => generateModern4in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("") + cutIcon;
+      }
+
+      // 9. 4I Stub
+      const g4I = document.getElementById("grid4I_Stub");
+      if (g4I) {
+        g4I.innerHTML = demoBills.map((b, i) => generateStub4in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("") + cutIcon;
+      }
+
+      // 11. 3-in-1 Wide
+      const g11 = document.getElementById("grid3in1Wide");
+      if (g11) {
+        g11.innerHTML = demoBills.slice(0, 3).map((b, i) => generateStrip3in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("");
+      }
+
+      // 12. 3-in-1 Side Stub
+      const g12 = document.getElementById("grid3in1Stub");
+      if (g12) {
+        g12.innerHTML = demoBills.slice(0, 3).map((b, i) => generateStripWithStub3in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("");
+      }
+
+      // 13. 2-in-1 Detailed
+      const g13 = document.getElementById("grid2in1Detailed");
+      if (g13) {
+        g13.innerHTML = demoBills.slice(0, 2).map((b, i) => generateFormat2HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("");
+      }
+
+      // 14. 2-in-1 Modern
+      const g14 = document.getElementById("grid2in1Modern");
+      if (g14) {
+        g14.innerHTML = demoBills.slice(0, 2).map((b, i) => generateModern2in1HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("");
+      }
+
+      // 15. 2-in-1 Counterfoil
+      const g15 = document.getElementById("grid2in1Counterfoil");
+      if (g15) {
+        g15.innerHTML = demoBills.slice(0, 2).map((b, i) => generateFormat3HTML(b, demoCustomers[i], demoFirm, demoItems, demoSalesmen, [])).join("");
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", renderAllMockups);
+  </script>
+</body>
+</html>
+

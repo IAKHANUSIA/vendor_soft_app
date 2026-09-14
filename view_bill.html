@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="gu">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ગ્રાહક માસિક બિલ | Digital Credit Memo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="js/qrcode.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', 'Noto Sans Gujarati', sans-serif;
+      background: #0f172a;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 16px 10px;
+    }
+
+    .bill-wrapper {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .action-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      width: 100%;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-pay {
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+      font-size: 1.05rem;
+    }
+
+    .btn-pay:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-download {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #38bdf8;
+    }
+
+    .btn-print {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #475569;
+    }
+
+    .color-bill-card {
+      background: #ffffff;
+      color: #0f172a;
+      border: 2.5px solid #0f3b7d;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .memo-pill {
+      text-align: center;
+      margin-top: -24px;
+      margin-bottom: 8px;
+    }
+
+    .memo-pill span {
+      background: #0f3b7d;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 18px;
+      border-radius: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .upi-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .action-bar {
+        display: none;
+      }
+      .color-bill-card {
+        box-shadow: none;
+        border: 2px solid #000;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bill-wrapper">
+    
+    <!-- Top Action Bar for Customer -->
+    <div class="action-bar">
+      <a id="directUpiBtn" href="#" class="btn-action btn-pay">
+        <span>📲</span> <span>GPay / PhonePe થી ચૂકવો</span>
+      </a>
+      <button onclick="downloadBillPNG()" class="btn-action btn-download">
+        <span>📸</span> <span>PNG સેવ</span>
+      </button>
+      <button onclick="window.print()" class="btn-action btn-print">
+        <span>🖨️</span> <span>પ્રિન્ટ</span>
+      </button>
+    </div>
+
+    <!-- Main Visual Credit Memo Card -->
+    <div id="billCard" class="color-bill-card">
+      
+      <!-- Top Pill -->
+      <div class="memo-pill">
+        <span>Credit Memo</span>
+      </div>
+
+      <!-- Agency Header -->
+      <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #0f3b7d; padding-bottom:8px; margin-bottom:8px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:44px; height:44px; border:2px solid #0f3b7d; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-weight:900; color:#0f3b7d; line-height:1;">
+            <span style="font-size:20px; color:#0f3b7d;">P<span style="color:#ef4444; font-size:14px;">■</span></span>
+            <span style="font-size:6px; text-align:center; color:#0f3b7d; letter-spacing:-0.2px;">PERFECT</span>
+          </div>
+          <div>
+            <div id="firmName" style="font-size:16px; font-weight:900; color:#0f3b7d; letter-spacing:0.2px; text-transform:uppercase;">PERFECT NEWSPAPER SUPPLIERS</div>
+            <div id="firmAddress" style="font-size:10.5px; color:#334155; font-weight:600;">📍 E-392, SANKALITNAGAR-JUHAPURA-Ahmedabad</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Owner & Billing Period -->
+      <div style="display:flex; justify-content:space-between; align-items:center; border:1.5px solid #0f3b7d; border-radius:8px; padding:6px 12px; margin-bottom:8px; background:#f8fafc;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="width:30px; height:30px; background:#e0f2fe; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px;">👤</div>
+          <div>
+            <div id="ownerName" style="font-size:12px; font-weight:800; color:#0f172a; text-transform:uppercase;">NIZAM TAI</div>
+            <div id="firmPhone" style="font-size:11.5px; font-weight:700; color:#0369a1;">9825778607</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:9.5px; font-weight:700; color:#64748b; text-transform:uppercase;">Billing Period</div>
+          <div id="billPeriod" style="font-size:11.5px; font-weight:800; color:#0f172a;">01-Sep-2026 To 30-Sep-2026</div>
+        </div>
+      </div>
+
+      <!-- Customer Details -->
+      <div style="display:grid; grid-template-columns:3fr 2fr; gap:8px; font-size:11.5px; margin-bottom:8px; border:1px solid #cbd5e1; border-radius:6px; padding:6px 10px; background:#fff;">
+        <div>
+          <div><span style="color:#64748b;">Name:</span> <b id="custName" style="color:#0f3b7d; font-size:12.5px;">-</b></div>
+          <div><span style="color:#64748b;">Address:</span> <b id="custAddress">-</b></div>
+          <div style="margin-top:2px;"><span style="color:#64748b;">Mobile:</span> <b id="custMobile">-</b></div>
+          <div><span style="color:#64748b;">Salesman:</span> <b id="salesmanName" style="color:#0369a1;">JAMIR</b></div>
+        </div>
+        <div style="text-align:right;">
+          <div><span style="color:#64748b;">Bill No:</span> <b id="billNo" style="font-size:13.5px; color:#0f172a;">-</b></div>
+          <div style="margin-top:3px;"><span style="color:#64748b;">Month:</span> <b id="billMonth" style="color:#0f172a;">-</b></div>
+          <div style="margin-top:3px; font-size:10.5px; color:#64748b;">Seq: <b id="custSeq" style="color:#0369a1;">#-</b></div>
+        </div>
+      </div>
+
+      <!-- Items Table -->
+      <table style="width:100%; border-collapse:collapse; border:1.5px solid #0f3b7d; margin-bottom:6px; font-size:11.5px;">
+        <thead>
+          <tr style="background:#0f3b7d; color:#ffffff; font-size:11.5px;">
+            <th style="padding:5px 6px; width:36px; text-align:center; border-right:1px solid rgba(255,255,255,0.2);">No.</th>
+            <th style="padding:5px 6px; text-align:left; border-right:1px solid rgba(255,255,255,0.2);">Newspaper / Item</th>
+            <th style="padding:5px 6px; width:55px; text-align:center; border-right:1px solid rgba(255,255,255,0.2);">Days</th>
+            <th style="padding:5px 6px; width:80px; text-align:right;">Amount (₹)</th>
+          </tr>
+        </thead>
+        <tbody id="itemsTableBody">
+          <!-- Populated dynamically -->
+        </tbody>
+      </table>
+
+      <!-- Arrears Strip -->
+      <div id="arrearsStrip" style="background:#dbeafe; color:#991b1b; padding:4px 10px; font-size:11.5px; font-weight:700; border-radius:4px; margin-bottom:8px;">
+        ગયા મહીના સુધીની બાકી રકમ : ₹ <span id="arrearsAmt">0.00</span>
+      </div>
+
+      <!-- Payment & Calculation Grid -->
+      <div class="upi-grid">
+        <!-- Left: QR Code -->
+        <div style="text-align:center; border-right:1px solid #e2e8f0; padding-right:8px;">
+          <div style="background:#0f3b7d; color:#fff; font-size:9.5px; font-weight:700; padding:2px 8px; border-radius:10px; display:inline-block; margin-bottom:4px;">Scan & Pay</div>
+          <div id="qrCodeContainer" style="width:85px; height:85px; margin:0 auto;"></div>
+          <div style="display:flex; justify-content:center; gap:4px; margin-top:4px; font-size:8.5px; font-weight:700;">
+            <span style="color:#4285f4;">GPay</span> • <span style="color:#5f259f;">PhonePe</span> • <span style="color:#00b9f1;">Paytm</span>
+          </div>
+        </div>
+
+        <!-- Right: Totals -->
+        <div style="display:flex; flex-direction:column; justify-content:space-between; font-size:11.5px;">
+          <div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+              <span style="color:#475569;">Newspaper Amount:</span>
+              <b id="paperAmt" style="color:#0f172a;">₹0.00</b>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+              <span style="color:#475569;">Previous Balance:</span>
+              <b id="prevBal" style="color:#0f172a;">₹0.00</b>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:3px;">
+              <span style="color:#475569;">Home Delivery Charge:</span>
+              <b id="delCharge" style="color:#0f172a;">₹0.00</b>
+            </div>
+          </div>
+
+          <div style="background:#0f3b7d; color:#ffffff; padding:5px 8px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:10px; font-weight:700; text-transform:uppercase;">Net Amount Payable:</span>
+            <span id="totalPayable" style="font-size:15px; font-weight:900;">₹0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notice Panel -->
+      <div style="background:#fef9c3; border:1px solid #fde047; border-radius:6px; padding:6px; margin-bottom:6px; font-size:9.5px; color:#713f12;">
+        <div style="text-align:center; font-weight:800; font-size:10.5px; margin-bottom:3px; text-decoration:underline;">સૂચના</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1.2fr 1fr; gap:4px; text-align:center; line-height:1.2;">
+          <div><b>📅 ૧ થી ૧૦ માં બિલ ચૂકવવું.</b></div>
+          <div><b>🕌 ઈસ્લામિક તહેવારે રજા રહેશે.</b></div>
+          <div><b>📢 પેપર બંધ કરવું હોય તો જાણ કરવી.</b></div>
+          <div><b>🪙 દર મહિને ₹૧૦ સર્વિસ ચાર્જ.</b></div>
+        </div>
+      </div>
+
+      <!-- Footer WhatsApp Screenshot Notice -->
+      <div style="background:#f1f5f9; border:1px dashed #0f3b7d; border-radius:5px; padding:4px 8px; text-align:center; font-size:9.5px; font-weight:700; color:#0f3b7d;">
+        ✈️ ONLINE PAYMENT પછી SCREEN SHOT 💬 WhatsApp પર અવશ્ય મોકલવો. 💵
+      </div>
+
+      <div style="text-align:right; font-size:8px; color:#94a3b8; margin-top:3px;">
+        Devlop by :- Imtiyaz Khanusia 94276 98665
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Parse URL Parameters
+    const params = new URLSearchParams(window.location.search);
+
+    const firmName = params.get("firm") || "PERFECT NEWSPAPER SUPPLIERS";
+    const firmPhone = params.get("phone") || "9825778607";
+    const upiId = params.get("upi") || "9825778607@okaxis";
+    const owner = params.get("owner") || "NIZAM TAI";
+    const address = params.get("addr") || "E-392, SANKALITNAGAR-JUHAPURA-Ahmedabad";
+    
+    const custName = params.get("cust") || "ગ્રાહક";
+    const custAddr = params.get("caddr") || "-";
+    const custMobile = params.get("mob") || "-";
+    const salesman = params.get("sm") || "JAMIR";
+    const billNo = params.get("billNo") || "1001";
+    const month = params.get("m") || "Sep-2026";
+    const seq = params.get("seq") || "1";
+
+    const totalAmt = parseFloat(params.get("total") || "0").toFixed(2);
+    const paperAmt = parseFloat(params.get("paper") || totalAmt).toFixed(2);
+    const arrearsAmt = parseFloat(params.get("arrears") || "0").toFixed(2);
+    const delCharge = parseFloat(params.get("del") || "0").toFixed(2);
+    const days = params.get("days") || "30";
+    const papersStr = params.get("papers") || "GUJARAT SAMACHAR";
+
+    // Populate DOM Elements
+    document.getElementById("firmName").textContent = firmName;
+    document.getElementById("firmPhone").textContent = firmPhone;
+    document.getElementById("ownerName").textContent = owner;
+    document.getElementById("firmAddress").textContent = `📍 ${address}`;
+
+    document.getElementById("custName").textContent = custName;
+    document.getElementById("custAddress").textContent = custAddr;
+    document.getElementById("custMobile").textContent = custMobile;
+    document.getElementById("salesmanName").textContent = salesman;
+    document.getElementById("billNo").textContent = billNo;
+    document.getElementById("billMonth").textContent = month;
+    document.getElementById("custSeq").textContent = `#${seq}`;
+
+    document.getElementById("paperAmt").textContent = `₹${paperAmt}`;
+    document.getElementById("prevBal").textContent = `₹${arrearsAmt}`;
+    document.getElementById("arrearsAmt").textContent = arrearsAmt;
+    document.getElementById("delCharge").textContent = `₹${delCharge}`;
+    document.getElementById("totalPayable").textContent = `₹${totalAmt}`;
+
+    // Populate item rows
+    const paperList = papersStr.split(",").map(p => p.trim()).filter(Boolean);
+    const tbody = document.getElementById("itemsTableBody");
+    tbody.innerHTML = "";
+    if (paperList.length > 0) {
+      const perPaper = (parseFloat(paperAmt) / paperList.length).toFixed(2);
+      paperList.forEach((pName, idx) => {
+        const tr = document.createElement("tr");
+        tr.style.borderBottom = "1px solid #e2e8f0";
+        tr.innerHTML = `
+          <td style="padding:5px 6px; text-align:center; border-right:1px solid #e2e8f0; font-weight:700;">${idx + 1}</td>
+          <td style="padding:5px 6px; font-weight:700; color:#0f172a; border-right:1px solid #e2e8f0;">${pName}</td>
+          <td style="padding:5px 6px; text-align:center; border-right:1px solid #e2e8f0; font-weight:600;">${days}</td>
+          <td style="padding:5px 6px; text-align:right; font-weight:700; color:#0f172a;">${perPaper}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } else {
+      tbody.innerHTML = `
+        <tr style="border-bottom:1px solid #e2e8f0;">
+          <td style="padding:5px 6px; text-align:center; border-right:1px solid #e2e8f0; font-weight:700;">1</td>
+          <td style="padding:5px 6px; font-weight:700; color:#0f172a; border-right:1px solid #e2e8f0;">નિયમિત ન્યૂઝપેપર્સ</td>
+          <td style="padding:5px 6px; text-align:center; border-right:1px solid #e2e8f0; font-weight:600;">${days}</td>
+          <td style="padding:5px 6px; text-align:right; font-weight:700; color:#0f172a;">${paperAmt}</td>
+        </tr>
+      `;
+    }
+
+    // Dynamic UPI Link
+    const upiPayee = firmName.replace(/[^a-zA-Z0-9 ]/g, "").trim() || "VendorSoft";
+    const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiPayee)}&am=${totalAmt}&cu=INR&tn=Bill-${billNo}`;
+    
+    // Set 1-Tap Pay Button
+    document.getElementById("directUpiBtn").href = upiUrl;
+
+    // Generate QR Code SVG
+    if (window.createQRCodeSVG) {
+      document.getElementById("qrCodeContainer").innerHTML = window.createQRCodeSVG(upiUrl, 85);
+    }
+
+    // Offline Canvas PNG Downloader
+    function downloadBillPNG() {
+      const W = 490;
+      const H = 680;
+      const canvas = document.createElement("canvas");
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext("2d");
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = "#0f3b7d";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(2, 2, W - 4, H - 4);
+
+      ctx.fillStyle = "#0f3b7d";
+      ctx.fillRect(W / 2 - 60, 4, 120, 20);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 10px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("CREDIT MEMO", W / 2, 18);
+
+      ctx.font = "bold 16px sans-serif";
+      ctx.fillStyle = "#0f3b7d";
+      ctx.fillText(firmName.toUpperCase(), W / 2, 48);
+
+      ctx.font = "normal 10px sans-serif";
+      ctx.fillStyle = "#475569";
+      ctx.fillText(address, W / 2, 64);
+      ctx.fillText(`Phone: ${firmPhone}`, W / 2, 78);
+
+      canvas.toBlob(blob => {
+        if (!blob) return;
+        const dlUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.download = `Bill_${billNo}_${custName.replace(/[^a-zA-Z0-9]/g, "_")}.png`;
+        a.href = dlUrl;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }, "image/png");
+    }
+    window.downloadBillPNG = downloadBillPNG;
+  </script>
+
+</body>
+
+</html>

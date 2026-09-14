@@ -1,0 +1,3030 @@
+<!DOCTYPE html>
+<html lang="gu">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0b0f19">
+  <meta name="description"
+    content="Vendor Soft - 100% Offline-First Newspaper & Magazine Distribution Management System">
+  <title>Vendor Soft | ન્યૂઝપેપર વિતરણ સિસ્ટમ</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
+</head>
+
+<body>
+  <div class="ambient-glow"></div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="logo-badge">📰</div>
+      <div class="brand-info">
+        <h1 data-i18n="appTitle">વેન્ડર સોફ્ટ (Vendor Soft)</h1>
+        <p id="agencyHeaderSubtitle" data-i18n="tagline">વર્તમાનપત્ર અને સામયિક વિતરણ સિસ્ટમ</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="offline-pill">
+        <span class="pulse-dot"></span>
+        <span data-i18n="offlineStatus">૧૦૦% ઓફલાઇન સક્રિય</span>
+      </div>
+      <button class="btn-lang" id="langToggleBtn" onclick="toggleAppLanguage()">
+        <span>🌐 English</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Container -->
+  <div class="app-container">
+    <!-- Desktop Sidebar Navigation -->
+    <aside class="app-sidebar no-print">
+      <button class="nav-item active" onclick="switchView('dashboard')">
+        <span class="nav-icon">📊</span>
+        <span data-i18n="navDashboard">ડેશબોર્ડ</span>
+      </button>
+      <button class="nav-item" onclick="switchView('daily')">
+        <span class="nav-icon">🛵</span>
+        <span data-i18n="navDailyDelivery">રોજનું સેલ</span>
+      </button>
+      <button class="nav-item" onclick="switchView('depot')">
+        <span class="nav-icon">🏬</span>
+        <span data-i18n="navDepot">આવતીકાલની ખરીદી</span>
+      </button>
+      <button class="nav-item" onclick="switchView('customers')">
+        <span class="nav-icon">👥</span>
+        <span data-i18n="navCustomers">ગ્રાહક માસ્ટર</span>
+      </button>
+      <button class="nav-item" onclick="switchView('vacations')">
+        <span class="nav-icon">🌴</span>
+        <span data-i18n="navVacation">રજા કેલેન્ડર</span>
+      </button>
+      <button class="nav-item" onclick="switchView('billing')">
+        <span class="nav-icon">🧾</span>
+        <span data-i18n="navBilling">મહિનાનું બિલિંગ</span>
+      </button>
+      <button class="nav-item" onclick="switchView('payments')">
+        <span class="nav-icon">💰</span>
+        <span data-i18n="navPayments">ઉઘરાણી અને UPI</span>
+      </button>
+      <button class="nav-item" onclick="switchView('items')">
+        <span class="nav-icon">📰</span>
+        <span data-i18n="navItems">પેપર માસ્ટર </span>
+      </button>
+      <button class="nav-item" onclick="switchView('routes')">
+        <span class="nav-icon">🗺️</span>
+        <span data-i18n="navRoutes">છાપાં વિતરક</span>
+      </button>
+      <button class="nav-item" onclick="switchView('reports')">
+        <span class="nav-icon">📚</span>
+        <span data-i18n="navReports">ખાતાવહી અને હિસાબ</span>
+      </button>
+      <button class="nav-item" onclick="switchView('expenses')">
+        <span class="nav-icon">💸</span>
+        <span data-i18n="navExpenses">ખર્ચ અને બેંક</span>
+      </button>
+      <button class="nav-item" onclick="switchView('settings')">
+        <span class="nav-icon">⚙️</span>
+        <span data-i18n="navSettings">સેટિંગ્સ અને બેકઅપ</span>
+      </button>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-content">
+
+      <!-- ================= 1. DASHBOARD VIEW ================= -->
+      <section id="view-dashboard" class="view-panel active">
+        <div class="panel-header">
+          <h2><span>📊</span> <span data-i18n="navDashboard">ડેશબોર્ડ</span></h2>
+          <div class="offline-pill" style="font-size:0.85rem; padding:6px 12px;">
+            <span>📅 <span id="currentDateDisplay"></span></span>
+          </div>
+        </div>
+
+        <!-- Quick Actions Row -->
+        <div class="quick-actions-bar">
+          <button class="quick-btn" onclick="switchView('daily')">
+            <span>🛵</span> <span data-i18n="actionMorningSheet">સવારનું વેચાણ</span>
+          </button>
+          <button class="quick-btn" onclick="switchView('depot')">
+            <span>🏬</span> <span data-i18n="actionDepotPurchase">આવતીકાલનું સેલ (ડેપો ખરીદી)</span>
+          </button>
+          <button class="quick-btn" onclick="openCustomerModal()">
+            <span>➕</span> <span data-i18n="actionAddCustomer">નવો ગ્રાહક</span>
+          </button>
+          <button class="quick-btn" onclick="openVacationModal()">
+            <span>🌴</span> <span data-i18n="actionAddVacation">રજાની એન્ટ્રી</span>
+          </button>
+          <button class="quick-btn" onclick="openPaymentModal()">
+            <span>💰</span> <span data-i18n="actionCollectPay">ઉઘરાણી જમા કરો</span>
+          </button>
+          <button class="quick-btn" onclick="switchView('billing')">
+            <span>🧾</span> <span data-i18n="navBilling">મહિનાનું બિલિંગ</span>
+          </button>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card card-cyan">
+            <div class="metric-header">
+              <span class="metric-title" data-i18n="totalMorningPapers">સવારે જોઈતા કુલ પેપર્સ</span>
+              <span class="metric-icon">📰</span>
+            </div>
+            <div class="metric-value" id="dashTotalCopies">0</div>
+            <div class="metric-footer" data-i18n="todayDemandSummary">ડેપોમાંથી ઉપાડવાની સંખ્યા</div>
+          </div>
+
+          <div class="metric-card card-emerald">
+            <div class="metric-header">
+              <span class="metric-title" data-i18n="activeCustomersCount">સક્રિય ગ્રાહકો</span>
+              <span class="metric-icon">👥</span>
+            </div>
+            <div class="metric-value" id="dashActiveCust">0</div>
+            <div class="metric-footer" id="dashRouteCountInfo">કુલ લાઇન્સ પર</div>
+          </div>
+
+          <div class="metric-card card-amber">
+            <div class="metric-header">
+              <span class="metric-title" data-i18n="activeVacationsCount">આજે રજા પર ગ્રાહકો</span>
+              <span class="metric-icon">🌴</span>
+            </div>
+            <div class="metric-value" id="dashOnVacation">0</div>
+            <div class="metric-footer" data-i18n="vacationImpact">પેપર ડિલિવરી આપોઆપ બંધ છે</div>
+          </div>
+
+          <div class="metric-card card-rose">
+            <div class="metric-header">
+              <span class="metric-title" data-i18n="monthlyPendingAmt">કુલ બાકી ઉઘરાણી</span>
+              <span class="metric-icon">💳</span>
+            </div>
+            <div class="metric-value" id="dashTotalPending">₹0</div>
+            <div class="metric-footer" id="dashCollectionInfo">વસૂલાત બાકી</div>
+          </div>
+        </div>
+
+        <!-- Morning Depot Demand Table -->
+        <div class="content-card">
+          <div class="card-title">
+            <span>📦</span> <span data-i18n="todayDemandSummary">ડેપોમાંથી લેવાના પેપર્સની વિગત (સવારની માંગ)</span>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table" id="dashboardDemandTable">
+              <thead>
+                <tr>
+                  <th data-i18n="itemCode">કોડ</th>
+                  <th data-i18n="paperName">પેપરનું નામ</th>
+                  <th data-i18n="regularCopies">નિયમિત નકલ</th>
+                  <th data-i18n="extraCopies">વધારાની નકલ</th>
+                  <th data-i18n="requiredCopies">કુલ ખરીદવાની નકલ</th>
+                </tr>
+              </thead>
+              <tbody id="dashDemandTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. DAILY DELIVERY VIEW ================= -->
+      <section id="view-daily" class="view-panel">
+        <div class="panel-header">
+          <h2><span>🛵</span> <span data-i18n="dailyDeliveryTitle">રોજિંદી વિતરણ ચેકલિસ્ટ (વિતરક લીસ્ટ)</span></h2>
+          <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+            <input type="date" id="dailyDeliveryDate" class="form-control" style="width:160px;"
+              onchange="renderDailyDeliveryView()">
+            <select id="dailyRouteFilter" class="form-control" style="width:180px;"
+              onchange="renderDailyDeliveryView()">
+              <!-- Injected via JS -->
+            </select>
+            <div id="dailySalesmanBanner"
+              style="display:none; align-items:center; gap:8px; background:rgba(56, 189, 248, 0.12); border:1px solid rgba(56, 189, 248, 0.35); padding:6px 14px; border-radius:20px; font-size:0.88rem; font-weight:600; color:var(--accent-cyan);">
+              <span>🚴‍♂️</span> <span id="dailySalesmanText">વિતરક: -</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="window.print()">
+              <span>🖨️</span> <span data-i18n="printSheet">પ્રિન્ટ શીટ</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th style="width:70px;" data-i18n="sequenceNo">ક્રમ</th>
+                  <th data-i18n="customer">ગ્રાહક</th>
+                  <th data-i18n="assignedPapers">પેપર્સ</th>
+                  <th data-i18n="address">સરનામું</th>
+                  <th data-i18n="deliveryStatus">સ્થિતિ</th>
+                  <th style="width:110px;" data-i18n="actions">ક્રિયા</th>
+                </tr>
+              </thead>
+              <tbody id="dailyDeliveryTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2B. DEPOT PURCHASE & EVENING SALES VIEW ================= -->
+      <section id="view-depot" class="view-panel">
+        <div class="panel-header">
+          <h2><span>🏬</span> <span data-i18n="depotTitle">આવતીકાલનું સેલ અને ડેપો ખરીદી હિસાબ</span></h2>
+          <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <label style="font-size:0.85rem; color:var(--text-muted);">તારીખ:</label>
+              <input type="date" id="depotSheetDate" class="form-control" style="width:160px;"
+                onchange="renderDepotPurchaseView()">
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="setDepotDate('tomorrow')">
+              <span>📅</span> <span>આવતીકાલ</span>
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="setDepotDate('today')">
+              <span>📅</span> <span>આજે</span>
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="printDepotSlip()">
+              <span>🖨️</span> <span>ડેપો સ્લિપ પ્રિન્ટ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card card-cyan">
+            <div class="metric-header">
+              <span class="metric-title" data-i18n="depotTotalCopies">કુલ ખરીદવાની નકલ</span>
+              <span class="metric-icon">📦</span>
+            </div>
+            <div class="metric-value" id="depotTotalCopiesVal">0</div>
+            <div class="metric-footer" id="depotCopiesBreakdown">ગ્રાહક + કાઉન્ટર નકલ</div>
+          </div>
+
+          <div class="metric-card card-rose">
+            <div class="metric-header">
+              <span class="metric-title" data-i18n="depotPayableAmount">ડેપોને ચૂકવવાની રકમ</span>
+              <span class="metric-icon">💸</span>
+            </div>
+            <div class="metric-value" id="depotTotalPurchaseVal">₹0</div>
+            <div class="metric-footer" data-i18n="depotPurchaseBasis">ખરીદ ભાવ (PTR) મુજબ ચૂકવણી</div>
+          </div>
+
+          <div class="metric-card card-emerald">
+            <div class="metric-header">
+              <span class="metric-title" data-i18n="depotExpectedSale">અપેક્ષિત વેચાણ રકમ</span>
+              <span class="metric-icon">💰</span>
+            </div>
+            <div class="metric-value" id="depotTotalSaleVal">₹0</div>
+            <div class="metric-footer" data-i18n="depotSaleBasis">વેચાણ ભાવ (MRP) મુજબ ગણતરી</div>
+          </div>
+
+          <div class="metric-card card-amber">
+            <div class="metric-header">
+              <span class="metric-title" data-i18n="depotExpectedProfit">અપેક્ષિત નફો / માર્જિન</span>
+              <span class="metric-icon">✨</span>
+            </div>
+            <div class="metric-value" id="depotTotalProfitVal">₹0</div>
+            <div class="metric-footer" data-i18n="depotMarginInfo">કુલ નફો / માર્જિન</div>
+          </div>
+        </div>
+
+        <!-- Depot Demand & Purchase Table -->
+        <div class="content-card">
+          <div class="card-title"
+            style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <span><span>📋</span> <span data-i18n="depotTableTitle">પેપર મુજબ ખરીદી અને ચૂકવણી વિગત</span> (<span
+                id="depotDayNameDisplay" style="color:var(--accent-cyan); font-weight:700;">આવતીકાલ</span>)</span>
+            <span style="font-size:0.85rem; color:var(--text-dim);">* કાઉન્ટર/વધારાની નકલ બદલીને Enter દબાવો</span>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table" id="depotPurchaseTable">
+              <thead>
+                <tr>
+                  <th style="width:70px;">કોડ</th>
+                  <th>પેપરનું નામ</th>
+                  <th>ગ્રાહક માંગ</th>
+                  <th style="width:115px;">કાઉન્ટર નકલ</th>
+                  <th>કુલ ખરીદી</th>
+                  <th>ખરીદ ભાવ (PTR)</th>
+                  <th style="color:#fb7185; font-weight:700;">ડેપોને ચૂકવવાના (₹)</th>
+                  <th>વેચાણ ભાવ (MRP)</th>
+                  <th>વેચાણ રકમ (₹)</th>
+                  <th style="color:#34d399; font-weight:700;">નફો (₹)</th>
+                </tr>
+              </thead>
+              <tbody id="depotPurchaseTbody">
+                <!-- Injected via JS -->
+              </tbody>
+              <tfoot id="depotPurchaseTfoot" style="font-weight:700; background:rgba(255,255,255,0.04);">
+                <!-- Injected via JS -->
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. CUSTOMER MASTER VIEW ================= -->
+      <section id="view-customers" class="view-panel">
+        <div class="panel-header">
+          <h2><span>👥</span> <span data-i18n="customersTitle">ગ્રાહક માસ્ટર</span> <span id="customerTotalBadge"
+              class="badge badge-blue" style="font-size:0.85rem; vertical-align:middle; margin-left:8px;">0
+              ગ્રાહક</span></h2>
+          <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
+            <div
+              style="display:flex; background:rgba(255,255,255,0.06); padding:2px; border-radius:8px; border:1px solid var(--border-color);">
+              <button class="btn btn-sm btn-primary" id="custFilterBtnAll"
+                onclick="setCustomerStatusFilter('all')">બધા</button>
+              <button class="btn btn-sm btn-secondary" id="custFilterBtnActive"
+                onclick="setCustomerStatusFilter('active')">🟢 સક્રિય</button>
+              <button class="btn btn-sm btn-secondary" id="custFilterBtnInactive"
+                onclick="setCustomerStatusFilter('inactive')">🔴 બંધ</button>
+            </div>
+            <input type="text" id="custSearchInput" class="form-control" data-i18n-placeholder="searchCustomers"
+              placeholder="નામ, લાઇન અથવા મોબાઈલથી શોધો..." oninput="filterCustomersTable()" style="width:190px;">
+            <select id="custSalesmanFilter" class="form-control" style="width:165px;"
+              onchange="onCustomerFilterChange()">
+              <option value="all">🚴‍♂️ બધા વિતરક (Salesman)</option>
+            </select>
+            <select id="custCollManFilter" class="form-control" style="width:165px;"
+              onchange="onCustomerFilterChange()">
+              <option value="all">💼 બધા ઉઘરાણી મેન</option>
+            </select>
+            <button class="btn btn-secondary" onclick="openRouteOrderModal()"
+              title="લાઇન મુજબ ગ્રાહકોનો ક્રમ ઉપર-નીચે ગોઠવો">
+              <span>🔀</span> <span>લાઇન ક્રમ ગોઠવો</span>
+            </button>
+            <button class="btn btn-primary" onclick="openCustomerModal()">
+              <span>➕</span> <span data-i18n="addCustomer">નવો ગ્રાહક</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th style="width:65px;" title="ગ્રાહક નંબર (Customer ID)">ગ્રાહક નં.</th>
+                  <th style="width:60px;" title="સવારની હોકર શીટ માટે વિતરણ ક્રમ">ડિલિવરી ક્રમ</th>
+                  <th style="width:60px;" title="કલેક્શન મેન માટે ઉઘરાણી ક્રમ">ઉઘરાણી ક્રમ</th>
+                  <th data-i18n="customerName">ગ્રાહકનું નામ / સરનામું</th>
+                  <th style="min-width:140px;" data-i18n="customerLine">લાઇન / સ્ટાફ (વિતરક & કલેક્શન)</th>
+                  <th data-i18n="subscribedPapers">ચાલુ પેપર્સ</th>
+                  <th style="width:90px; text-align:center;" data-i18n="billingType">બિલિંગ</th>
+                  <th data-i18n="mobileNo">મોબાઈલ</th>
+                  <th data-i18n="balance">બાકી રકમ (₹)</th>
+                  <th data-i18n="status">સ્થિતિ</th>
+                  <th style="width:140px;" data-i18n="actions">ક્રિયાઓ</th>
+                </tr>
+              </thead>
+              <tbody id="customersTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 4. VACATIONS VIEW ================= -->
+      <section id="view-vacations" class="view-panel">
+        <div class="panel-header">
+          <h2><span>🌴</span> <span data-i18n="vacationTitle">ગ્રાહક રજા કેલેન્ડર (પેપર બંધ તારીખ)</span></h2>
+          <button class="btn btn-primary" onclick="openVacationModal()">
+            <span>➕</span> <span data-i18n="addVacationEntry">રજાની નવી નોંધણી</span>
+          </button>
+        </div>
+
+        <div class="content-card">
+          <div class="card-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem;">
+            <div>
+              <span>📅</span> <span data-i18n="activeVacations">ચાલુ અને નિર્ધારિત રજાઓનું લિસ્ટ</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+              <label style="font-size:0.85rem; font-weight:600; color:var(--text-muted); margin:0;">માસ ફિલ્ટર (Month):</label>
+              <input type="month" id="vacationMonthFilter" class="form-control" style="width:auto; padding:0.35rem 0.65rem; font-size:0.85rem; height:auto;" onchange="renderVacationsView()">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="clearVacationMonthFilter()" title="બધા માસની રજાઓ દર્શાવો">બધા દર્શાવો</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th data-i18n="customer">ગ્રાહકનું નામ</th>
+                  <th data-i18n="startDate">તારીખથી શરૂ</th>
+                  <th data-i18n="endDate">તારીખ સુધી</th>
+                  <th data-i18n="totalDays">કુલ દિવસો</th>
+                  <th data-i18n="vacationReason">કારણ / નોંધ</th>
+                  <th style="width:100px;" data-i18n="actions">ક્રિયા</th>
+                </tr>
+              </thead>
+              <tbody id="vacationsTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Paper Holidays Section -->
+        <div class="content-card" style="margin-top:1.5rem; border-left:4px solid var(--accent-amber);">
+          <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span>🗞️</span> <span data-i18n="paperHolidays">પેપરની રજાઓ (Paper Holidays)</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="openPaperHolidayModal()">
+              <span>➕</span> રજા ઉમેરો
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>પેપરનું નામ</th>
+                  <th>તારીખથી</th>
+                  <th>તારીખ સુધી</th>
+                  <th>કુલ દિવસો</th>
+                  <th style="width:80px;">ક્રિયા</th>
+                </tr>
+              </thead>
+              <tbody id="paperHolidaysTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Mass Issues (Bonus Papers) Section -->
+        <div class="content-card" style="margin-top:1.5rem; border-left:4px solid var(--accent-cyan);">
+          <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span>🎁</span> <span>બોનસ પેપર / બધા ગ્રાહકોને એકસાથે વિતરણ (Mass Issue)</span>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openMassIssueModal()">
+              <span>➕</span> નવું બોનસ પેપર ઉમેરો
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>તારીખ</th>
+                  <th>પેપરનું નામ</th>
+                  <th>વેચાણ ભાવ (MRP)</th>
+                  <th>ખરીદ ભાવ (PTR)</th>
+                  <th>લક્ષિત ગ્રાહકો</th>
+                  <th>અન્ય પેપરની સ્થિતિ</th>
+                  <th>નોંધ</th>
+                  <th style="width:80px;">ક્રિયા</th>
+                </tr>
+              </thead>
+              <tbody id="massIssuesTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 5. MONTHLY BILLING VIEW ================= -->
+      <section id="view-billing" class="view-panel">
+        <div class="panel-header">
+          <h2><span>🧾</span> <span data-i18n="billingTitle">માસિક બિલિંગ પ્રોસેસ</span></h2>
+          <div style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
+            <select id="billingMonthSelect" class="form-control" style="width:130px;" onchange="renderBillingView()">
+              <option value="1">જાન્યુઆરી (Jan)</option>
+              <option value="2">ફેબ્રુઆરી (Feb)</option>
+              <option value="3">માર્ચ (Mar)</option>
+              <option value="4">એપ્રિલ (Apr)</option>
+              <option value="5">મે (May)</option>
+              <option value="6">જૂન (Jun)</option>
+              <option value="7">જુલાઈ (Jul)</option>
+              <option value="8">ઓગસ્ટ (Aug)</option>
+              <option value="9" selected>સપ્ટેમ્બર (Sep)</option>
+              <option value="10">ઓક્ટોબર (Oct)</option>
+              <option value="11">નવેમ્બર (Nov)</option>
+              <option value="12">ડિસેમ્બર (Dec)</option>
+            </select>
+            <input type="number" id="billingYearSelect" class="form-control" value="2026" style="width:85px;"
+              onchange="renderBillingView()">
+            <select id="billingRouteFilter" class="form-control" style="width:145px;" onchange="renderBillingView()">
+              <option value="all">બધી લાઇન</option>
+            </select>
+            <select id="billingSalesmanFilter" class="form-control" style="width:145px;" onchange="renderBillingView()">
+              <option value="all">બધા વિતરક</option>
+            </select>
+            <select id="billingSortSelect" class="form-control" style="width:160px;" onchange="renderBillingView()">
+              <option value="delivery">ક્રમ: ડિલિવરી મુજબ</option>
+              <option value="collection">ક્રમ: ઉઘરાણી મુજબ</option>
+              <option value="name">ક્રમ: નામ મુજબ</option>
+            </select>
+            <input type="text" id="billingSearchInput" class="form-control" style="width:150px;"
+              placeholder="🔍 શોધો..." oninput="renderBillingView()">
+            <button class="btn btn-primary" onclick="openCalculateBillsModal()">
+              <span>⚡</span> <span data-i18n="processBills">બિલ ગણો</span>
+            </button>
+            <button class="btn btn-secondary" onclick="openBulkPrintModal()"
+              style="background:rgba(56, 189, 248, 0.15); border-color:#38bdf8; color:#38bdf8;"
+              title="૪-ઇન-૧ A4 કટિંગ ફોર્મેટમાં બધા બિલ પ્રિન્ટ કરો">
+              <span>🖨️</span> <span>A4 ૪-ઇન-૧ પ્રિન્ટ</span>
+            </button>
+            <button class="btn" onclick="openWhatsAppExpressModal()"
+              style="background:linear-gradient(135deg, #22c55e, #16a34a); border-color:#15803d; color:#ffffff; font-weight:700; box-shadow:0 2px 8px rgba(34,197,94,0.3);"
+              title="વોટ્સએપ એક્સપ્રેસ ડિસ્પેચર - ક્રમશઃ આપોઆપ બિલ મોકલો">
+              <span>🚀</span> <span>WhatsApp Express</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="card-title">
+            <span>📋</span> <span data-i18n="customerBillDetails">બનેલા માસિક બિલની યાદી</span>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th style="width:60px;">ક્રમ</th>
+                  <th data-i18n="billNo">બિલ નં.</th>
+                  <th data-i18n="customer">ગ્રાહક</th>
+                  <th data-i18n="daysDelivered">આવેલા દિવસ</th>
+                  <th data-i18n="vacationDeduction">રજા કપાત (₹)</th>
+                  <th data-i18n="currentBill">ચાલુ બિલ (₹)</th>
+                  <th data-i18n="pastArrears">જૂની બાકી (₹)</th>
+                  <th data-i18n="netPayable">કુલ ભરવાપાત્ર (₹)</th>
+                  <th style="width:280px;" data-i18n="actions">સુધારો / શેર / પ્રિન્ટ</th>
+                </tr>
+              </thead>
+              <tbody id="billingTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 6. PAYMENTS & UPI VIEW ================= -->
+      <section id="view-payments" class="view-panel">
+        <div class="panel-header">
+          <h2><span>💰</span> <span data-i18n="paymentTitle">ઉઘરાણી અને ડાયનેમિક UPI QR કોડ</span></h2>
+          <button class="btn btn-primary" onclick="openPaymentModal()">
+            <span>➕</span> <span data-i18n="recordPayment">પાવતી બનાવો (નાણાં જમા)</span>
+          </button>
+        </div>
+
+        <div class="content-card">
+          <div class="card-title">
+            <span>📜</span> <span>તાજેતરની પાવતીઓ (Recent Receipts)</span>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th data-i18n="receiptNo">પાવતી નં.</th>
+                  <th data-i18n="paymentDate">તારીખ</th>
+                  <th data-i18n="customer">ગ્રાહક</th>
+                  <th data-i18n="amountPaid">મળેલ રકમ (₹)</th>
+                  <th data-i18n="paymentMode">પ્રકાર</th>
+                  <th data-i18n="referenceNo">રેફરન્સ #</th>
+                  <th style="width:120px;" data-i18n="actions">ક્રિયા</th>
+                </tr>
+              </thead>
+              <tbody id="paymentsTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 7. ITEM MASTER VIEW ================= -->
+      <section id="view-items" class="view-panel">
+        <div class="panel-header">
+          <h2><span>📰</span> <span data-i18n="itemsTitle">વસ્તુ માસ્ટર (પેપર્સ અને સામયિકો)</span></h2>
+          <button class="btn btn-primary" onclick="openItemModal()">
+            <span>➕</span> <span data-i18n="addItem">નવું પેપર ઉમેરો</span>
+          </button>
+        </div>
+
+        <div class="content-card">
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th data-i18n="itemCode">કોડ</th>
+                  <th data-i18n="itemName">પેપરનું નામ</th>
+                  <th data-i18n="itemType">પ્રકાર</th>
+                  <th data-i18n="weeklyRates">સાપ્તાહિક ભાવ (MRP / PTR)</th>
+                  <th data-i18n="monthlyRate">માસિક ફિક્સ ભાવ</th>
+                  <th>સ્થિતિ</th>
+                  <th style="width:130px;" data-i18n="actions">ક્રિયા</th>
+                </tr>
+              </thead>
+              <tbody id="itemsTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 8. ROUTES & STAFF VIEW ================= -->
+      <section id="view-routes" class="view-panel">
+        <div class="panel-header">
+          <h2><span>🗺️</span> <span>ડિલિવરી લાઇન અને સ્ટાફ માસ્ટર</span></h2>
+          <div style="display:flex; gap:0.5rem;" id="routeActionButtons">
+            <button class="btn btn-primary" id="btnAddNewRoute" onclick="openRouteModal()">
+              <span>➕</span> <span>નવી લાઇન ઉમેરો</span>
+            </button>
+            <button class="btn btn-primary" id="btnAddNewSalesman" style="display:none;" onclick="openSalesmanModal()">
+              <span>➕</span> <span>નવો વિતરક (Salesman)</span>
+            </button>
+            <button class="btn btn-primary" id="btnAddNewCollMan" style="display:none;"
+              onclick="openCollectionManModal()">
+              <span>➕</span> <span>નવો કલેક્શન મેન</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sub-tabs for Lines, Salesmen, Collection Men -->
+        <div
+          style="display:flex; gap:0.5rem; margin-bottom:1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.5rem; flex-wrap:wrap;">
+          <button class="btn btn-sm btn-primary" id="subtabBtnRoutes" onclick="switchRouteStaffSubTab('routes')">
+            <span>🗺️</span> <span>ડિલિવરી લાઇન (Lines)</span>
+          </button>
+          <button class="btn btn-sm btn-secondary" id="subtabBtnSalesmen" onclick="switchRouteStaffSubTab('salesmen')">
+            <span>🛵</span> <span>વિતરક / હોકર માસ્ટર (Salesmen)</span>
+          </button>
+          <button class="btn btn-sm btn-secondary" id="subtabBtnCollectionMen"
+            onclick="switchRouteStaffSubTab('collectionMen')">
+            <span>💼</span> <span>ઉઘરાણી સ્ટાફ (Collection Men)</span>
+          </button>
+        </div>
+
+        <!-- Tab 1: Routes Container -->
+        <div id="subtabContentRoutes" class="content-card">
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th data-i18n="routeCode">લાઇન કોડ</th>
+                  <th data-i18n="routeName">લાઇનનું નામ</th>
+                  <th>નિયુક્ત વિતરક (હોકર)</th>
+                  <th>નિયુક્ત કલેક્શન મેન</th>
+                  <th data-i18n="customerCount">કુલ ગ્રાહકો</th>
+                  <th style="width:120px;" data-i18n="actions">ક્રિયા</th>
+                </tr>
+              </thead>
+              <tbody id="routesTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 2: Salesmen Container -->
+        <div id="subtabContentSalesmen" class="content-card" style="display:none;">
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>વિતરકનું નામ (Salesman)</th>
+                  <th>મોબાઈલ નંબર</th>
+                  <th>સંભાળતી લાઇન</th>
+                  <th>માસિક પગાર (Salary ₹)</th>
+                  <th>નોંધ</th>
+                  <th style="width:110px;">ક્રિયા</th>
+                </tr>
+              </thead>
+              <tbody id="salesmenTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 3: Collection Men Container -->
+        <div id="subtabContentCollectionMen" class="content-card" style="display:none;">
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>કલેક્શન મેનનું નામ</th>
+                  <th>મોબાઈલ નંબર</th>
+                  <th>ઉઘરાણી લાઇન</th>
+                  <th>માસિક પગાર (Salary ₹)</th>
+                  <th>નોંધ</th>
+                  <th style="width:110px;">ક્રિયા</th>
+                </tr>
+              </thead>
+              <tbody id="collectionMenTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 9. REPORTS & LEDGERS VIEW ================= -->
+      <section id="view-reports" class="view-panel">
+        <div class="panel-header">
+          <h2><span>📚</span> <span data-i18n="reportsTitle">ખાતાવહી અને હિસાબી રિપોર્ટ્સ</span></h2>
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="printCollectionSheet()">
+              <span>📋</span> <span>ઉઘરાણી લિસ્ટ પ્રિન્ટ (Collection Sheet)</span>
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="exportReportsCSV()">
+              <span>📥</span> <span data-i18n="exportExcel">Excel/CSV એક્સપોર્ટ</span>
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="window.print()">
+              <span>🖨️</span> <span>પ્રિન્ટ પેજ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter and Summary Bar -->
+        <div class="content-card" style="margin-bottom:1rem; padding:1rem;">
+          <div
+            style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:0.85rem; align-items:end;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label style="font-size:0.85rem; font-weight:600; color:var(--accent-cyan);">ડિલિવરી લાઇન (Line):</label>
+              <select id="reportRouteFilter" class="form-control" onchange="renderReportsView()">
+                <option value="all">બધી લાઇન્સ (All Lines)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label style="font-size:0.85rem; font-weight:600; color:var(--accent-emerald);">ઉઘરાણી સ્ટાફ
+                (Staff):</label>
+              <select id="reportStaffFilter" class="form-control" onchange="renderReportsView()">
+                <option value="all">બધા સ્ટાફ (All Staff)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label style="font-size:0.85rem; font-weight:600; color:var(--accent-amber);">ક્રમ ગોઠવો (Sort
+                By):</label>
+              <select id="reportSortSelect" class="form-control" onchange="renderReportsView()">
+                <option value="collSeq">ઉઘરાણી ક્રમ (Collection Seq)</option>
+                <option value="delSeq">ડિલિવરી ક્રમ (Delivery Seq)</option>
+                <option value="amountDesc">વધુ બાકી રકમ (Highest Balance)</option>
+                <option value="name">ગ્રાહક નામ (Customer Name)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label style="font-size:0.85rem; font-weight:600;">શોધો (Search):</label>
+              <input type="text" id="reportSearchInput" class="form-control" placeholder="નામ, સરનામું, નંબર..."
+                oninput="renderReportsView()">
+            </div>
+          </div>
+
+          <!-- KPI Summary Strip -->
+          <div
+            style="display:flex; gap:1.5rem; flex-wrap:wrap; margin-top:1rem; padding-top:0.85rem; border-top:1px solid var(--border-color); font-size:0.92rem;">
+            <div>
+              <span style="color:var(--text-muted);">કુલ બાકી ઉઘરાણી: </span>
+              <b style="color:#fb7185; font-size:1.15rem;" id="reportTotalPendingAmt">₹0</b>
+            </div>
+            <div>
+              <span style="color:var(--text-muted);">બાકી ગ્રાહકો: </span>
+              <b style="color:var(--accent-cyan); font-size:1.15rem;" id="reportTotalCustCount">0</b>
+            </div>
+            <div>
+              <span style="color:var(--text-muted);">પસંદ કરેલ લાઇન: </span>
+              <b style="color:var(--text-main);" id="reportSelectedLineInfo">બધી લાઇન્સ</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>📑 <span data-i18n="reportOutstanding">લાઇન મુજબ બાકી ઉઘરાણી લિસ્ટ (Line Outstanding)</span></span>
+            <span id="reportCountBadge" class="badge badge-amber">0 ગ્રાહકો</span>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table" id="reportOutstandingTable">
+              <thead>
+                <tr>
+                  <th style="width:65px; text-align:center;">ક્રમ #</th>
+                  <th data-i18n="customerLine">લાઇન</th>
+                  <th data-i18n="customer">ગ્રાહક & કોડ</th>
+                  <th data-i18n="address">સરનામું</th>
+                  <th data-i18n="mobileNo">મોબાઈલ</th>
+                  <th data-i18n="balance">બાકી રકમ (₹)</th>
+                  <th style="width:160px;" data-i18n="actions">ક્રિયા</th>
+                </tr>
+              </thead>
+              <tbody id="outstandingTbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 8B. EXPENSES & BANK MANAGEMENT VIEW ================= -->
+      <section id="view-expenses" class="view-panel">
+        <div class="panel-header"
+          style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:1.5rem;">
+          <h2><span>💸</span> <span>ખર્ચ અને બેંક વ્યવસ્થાપન (Expenses & Banking)</span></h2>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="openAddExpenseModal()">
+              <span>➕</span> <span>નવો ખર્ચ નોંધો (Add Expense)</span>
+            </button>
+            <button class="btn btn-secondary" onclick="openStaffSalaryModal()"
+              style="background:rgba(16, 185, 129, 0.15); border-color:#10b981; color:#10b981;">
+              <span>💼</span> <span>સ્ટાફ પગાર ચુકવણી (Salary Payout)</span>
+            </button>
+            <button class="btn btn-secondary" onclick="openAddBankModal()"
+              style="background:rgba(56, 189, 248, 0.15); border-color:#38bdf8; color:#38bdf8;">
+              <span>🏦</span> <span>બેંક એકાઉન્ટ ઉમેરો</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Summary Cards -->
+        <div class="metrics-grid"
+          style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-bottom: 1.5rem;">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">આ માસનો કુલ ખર્ચ</span>
+              <span class="metric-icon">💸</span>
+            </div>
+            <div class="metric-value" id="expMetricTotalMonth" style="color:#fb7185;">₹0</div>
+            <div class="metric-subtitle">ચાલુ મહિનાના તમામ ખર્ચાઓ</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">સ્ટાફ પગાર ચુકવણી</span>
+              <span class="metric-icon">💼</span>
+            </div>
+            <div class="metric-value" id="expMetricTotalSalary" style="color:#38bdf8;">₹0</div>
+            <div class="metric-subtitle">હોકર & કલેક્શન સ્ટાફ પગાર</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">પેટ્રોલ અને ઓફિસ ખર્ચ</span>
+              <span class="metric-icon">🛵</span>
+            </div>
+            <div class="metric-value" id="expMetricTotalGeneral" style="color:#fbbf24;">₹0</div>
+            <div class="metric-subtitle">પેટ્રોલ, ભાડું, સ્ટેશનરી વગેરે</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">રોકડ સિલક (Cash in Hand)</span>
+              <span class="metric-icon">💵</span>
+            </div>
+            <div class="metric-value" id="expMetricCashBalance" style="color:#34d399;">₹0</div>
+            <div class="metric-subtitle">કાઉન્ટર કેશ ડ્રોઅર સિલક</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">બેંક સિલક (Bank Balance)</span>
+              <span class="metric-icon">🏦</span>
+            </div>
+            <div class="metric-value" id="expMetricBankBalance" style="color:#60a5fa;">₹0</div>
+            <div class="metric-subtitle">તમામ બેંક ખાતાઓનું બેલેન્સ</div>
+          </div>
+        </div>
+
+        <!-- Sub Tabs: Expense Register, Staff Salary, Bank Accounts -->
+        <div class="sub-tabs-bar">
+          <button class="sub-tab-btn active" id="expTabRegisterBtn" onclick="switchExpensesSubTab('register')">📑 ૧.
+            ખર્ચ રજીસ્ટર (Expense List)</button>
+          <button class="sub-tab-btn" id="expTabSalaryBtn" onclick="switchExpensesSubTab('salary')">💼 ૨. સ્ટાફ પગાર
+            હિસાબ (Staff Salary)</button>
+          <button class="sub-tab-btn" id="expTabBankBtn" onclick="switchExpensesSubTab('bank')">🏦 ૩. બેંક ખાતા & પાસબુક
+            (Bank Accounts)</button>
+        </div>
+
+        <!-- Sub Tab 1: Expense Register -->
+        <div id="expSubTabRegister" class="exp-sub-tab-content">
+          <div class="content-card">
+            <div
+              style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:1rem;">
+              <div class="card-title" style="margin:0;">
+                <span>📋</span> <span>તમામ ખર્ચાઓની યાદી (Expense Log)</span>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                <select id="expFilterCategory" class="form-control" style="width:165px;"
+                  onchange="renderExpensesView()">
+                  <option value="all">બધા પ્રકારના ખર્ચ</option>
+                  <option value="salary">💼 સ્ટાફ પગાર (Salary)</option>
+                  <option value="petrol">🛵 પેટ્રોલ / ટ્રાન્સપોર્ટ</option>
+                  <option value="rent">🏢 ઓફિસ / દુકાન ભાડું</option>
+                  <option value="stationery">✏️ સ્ટેશનરી & પ્રિન્ટિંગ</option>
+                  <option value="tea_snacks">☕ ચા-નાસ્તો & રિફ્રેશમેન્ટ</option>
+                  <option value="bank_charges">🏦 બેંક ચાર્જિસ / ફી</option>
+                  <option value="other">📦 અન્ય પરચુરણ ખર્ચ</option>
+                </select>
+                <input type="month" id="expFilterMonth" class="form-control" style="width:150px;"
+                  onchange="renderExpensesView()">
+                <input type="text" id="expSearchInput" class="form-control" style="width:150px;"
+                  placeholder="🔍 શોધો..." oninput="renderExpensesView()">
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th style="width:105px;">તારીખ</th>
+                    <th style="width:145px;">ખર્ચનો પ્રકાર (Category)</th>
+                    <th>વિગત / કોને ચૂકવ્યા (Payee / Description)</th>
+                    <th style="width:130px;">ચુકવણી મોડ</th>
+                    <th style="width:115px; text-align:right;">રકમ (₹)</th>
+                    <th style="width:90px; text-align:center;">એક્શન</th>
+                  </tr>
+                </thead>
+                <tbody id="expensesTbody">
+                  <!-- Injected via JS -->
+                </tbody>
+                <tfoot>
+                  <tr style="background:rgba(255,255,255,0.03); font-weight:700;">
+                    <td colspan="4" style="text-align:right; padding:8px;">કુલ ખર્ચ (Total):</td>
+                    <td style="text-align:right; color:#fb7185; font-size:1.15rem;" id="expTableTotalFoot">₹0</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub Tab 2: Staff Salary Ledger -->
+        <div id="expSubTabSalary" class="exp-sub-tab-content" style="display:none;">
+          <div class="content-card">
+            <div class="card-title">
+              <span>💼</span> <span>હોકર અને કલેક્શન સ્ટાફ પગાર હિસાબ & ચુકવણી</span>
+            </div>
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>સ્ટાફનું નામ</th>
+                    <th>હોદ્દો (Role)</th>
+                    <th>મોબાઈલ</th>
+                    <th>નિયુક્ત લાઇન / ગ્રાહકો</th>
+                    <th>છેલ્લી ચુકવણી</th>
+                    <th style="text-align:center;">પગાર ચુકવો</th>
+                  </tr>
+                </thead>
+                <tbody id="staffSalaryTbody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub Tab 3: Bank Accounts & Cash Balance -->
+        <div id="expSubTabBank" class="exp-sub-tab-content" style="display:none;">
+          <div class="content-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+              <div class="card-title" style="margin:0;">
+                <span>🏦</span> <span>બેંક એકાઉન્ટ્સ અને કેશ કાઉન્ટર</span>
+              </div>
+            </div>
+            <div id="bankAccountsContainer" class="form-grid"
+              style="grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-bottom:1.5rem;">
+              <!-- Injected via JS -->
+            </div>
+
+            <div class="card-title">
+              <span>📑</span> <span>બેંક ટ્રાન્ઝેક્શન પાસબુક (Bank Ledger)</span>
+            </div>
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th style="width:105px;">તારીખ</th>
+                    <th>બેંક / ખાતું</th>
+                    <th style="width:130px;">પ્રકાર (Type)</th>
+                    <th>વિગત / નોંધ</th>
+                    <th style="width:120px; text-align:right;">રકમ (₹)</th>
+                  </tr>
+                </thead>
+                <tbody id="bankTxTbody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 10. SETTINGS & BACKUP VIEW ================= -->
+      <section id="view-settings" class="view-panel">
+        <div class="panel-header">
+          <h2><span>⚙️</span> <span data-i18n="settingsTitle">એજન્સી પ્રોફાઇલ અને ઓફલાઇન બેકઅપ</span></h2>
+        </div>
+
+        <div class="content-card">
+          <div class="card-title">
+            <span>🏢</span> <span data-i18n="agencyProfile">એજન્સી પ્રોફાઇલ</span>
+          </div>
+          <form id="agencyProfileForm" onsubmit="saveAgencySettings(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label data-i18n="agencyName">એજન્સીનું નામ</label>
+                <input type="text" id="settingAgencyName" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label data-i18n="agencyPhone">સંપર્ક નંબર</label>
+                <input type="text" id="settingAgencyPhone" class="form-control">
+              </div>
+              <div class="form-group">
+                <label data-i18n="agencyUPIId">એજન્સી UPI ID (QR કોડ માટે)</label>
+                <input type="text" id="settingAgencyUPI" class="form-control" placeholder="example@upi" required>
+              </div>
+              <div class="form-group">
+                <label data-i18n="agencyGST">GST / રજિસ્ટ્રેશન નં.</label>
+                <input type="text" id="settingAgencyGST" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label data-i18n="agencyAddress">સરનામું</label>
+              <input type="text" id="settingAgencyAddress" class="form-control">
+            </div>
+
+            <!-- Custom Company / Agency Logo Upload -->
+            <div class="form-group"
+              style="background: rgba(255, 255, 255, 0.03); border: 1px dashed var(--border-glass); border-radius: 8px; padding: 12px; margin-bottom: 15px;">
+              <label style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-weight:700; color:var(--accent-cyan);">🖼️ કંપની / એજન્સી લોગો (Company / Firm
+                  Logo)</span>
+                <span style="font-size:0.75rem; color:var(--text-muted);">બિલ હેડર પર આપનો મનપસંદ લોગો દર્શાવવા
+                  માટે</span>
+              </label>
+              <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+                <div id="agencyLogoPreviewBox"
+                  style="width:75px; height:50px; background:#ffffff; border:1px solid #cbd5e1; border-radius:6px; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:2px;">
+                  <span id="agencyLogoEmptyPlaceholder" style="font-size:0.72rem; color:#64748b;">No Logo</span>
+                  <img id="agencyLogoPreviewImg" src=""
+                    style="display:none; max-width:100%; max-height:100%; object-fit:contain;" alt="Logo">
+                </div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <label class="btn btn-secondary btn-sm"
+                    style="cursor:pointer; margin:0; display:inline-flex; align-items:center; gap:5px;">
+                    <span>📁</span> <span>લોગો ફાઇલ પસંદ કરો</span>
+                    <input type="file" id="settingAgencyLogoInput" accept="image/*" style="display:none;"
+                      onchange="handleAgencyLogoUpload(event)">
+                  </label>
+                  <button type="button" id="removeAgencyLogoBtn" class="btn btn-danger btn-sm"
+                    style="display:none; padding:4px 8px; font-size:0.78rem;" onclick="removeAgencyLogo()">
+                    🗑️ લોગો દૂર કરો
+                  </button>
+                </div>
+              </div>
+              <small style="display:block; color:var(--text-muted); font-size:0.75rem; margin-top:5px;">
+                PNG, JPG, WebP અથવા SVG ફોર્મેટ (સાઇઝ ~૨૦૦×૮૦ px ભલામણ કરેલ). આ લોગો તમામ ૪-ઇન-૧ બિલ પર આપમેળે દેખાશે.
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label>મનપસંદ બિલ પ્રિન્ટ ફોર્મેટ (Default Print Format)</label>
+              <select id="settingAgencyDefaultFormat" class="form-control">
+                <optgroup label="A4 ૪-ઇન-૧ (4 બિલ પ્રતિ પેજ - A6)">
+                  <option value="4in1_perfect_memo">✂️ ૪A: પરફેક્ટ ક્લાસિક ક્રેડિટ મેમો (Image 1 ઓરિજિનલ)</option>
+                  <option value="4in1_ocean_blue">✂️ ૪B: મોડર્ન ઓશન બ્લુ (Image 2 TL)</option>
+                  <option value="4in1_vintage_parchment">✂️ ૪C: વિન્ટેજ પાર્ચમેન્ટ / બ્રાઉન (Image 2 TR)</option>
+                  <option value="4in1_magenta_wave">✂️ ૪D: વાઇબ્રન્ટ રોઝ / મેજેન્ટા વેવ (Image 2 BL)</option>
+                  <option value="4in1_eco_green">✂️ ૪E: ઇકો ફ્રેશ ગ્રીન / નેચર (Image 2 BR)</option>
+                  <option value="4in1_clean_bw">✂️ ૪F: મોનોક્રોમ ક્લીન ન્યૂઝપેપર (Image 3 B&W)</option>
+                  <option value="4in1_classic">✂️ ૪G: સ્ટાન્ડર્ડ B/W મેમો</option>
+                  <option value="4in1_modern">✂️ ૪H: મોડર્ન એલિગન્ટ કાર્ડ</option>
+                  <option value="4in1_stub">✂️ ૪I: સ્લિપ + ઉઘરાણી પાવતી (Stub)</option>
+                </optgroup>
+                <optgroup label="A4 ૩-ઇન-૧ (3 આડી સ્લિપ પ્રતિ પેજ - Strip)">
+                  <option value="3in1_wide">૩A: વાઇડ હોરિઝોન્ટલ લેજર સ્લિપ</option>
+                  <option value="3in1_stub">૩B: સ્લિપ + સાઇડ ઉઘરાણી પહોંચ</option>
+                </optgroup>
+                <optgroup label="A4 ૨-ઇન-૧ (2 બિલ પ્રતિ પેજ - Half Page)">
+                  <option value="2in1_detailed">૨A: વિગતવાર આઇટમાઇઝ્ડ બિલ</option>
+                  <option value="2in1_modern">૨B: પ્રીમિયમ કોમર્શિયલ ઇન્વોઇસ</option>
+                  <option value="2in1_counterfoil">૨C: હાફ પેજ + નીચે ઉઘરાણી પહોંચ</option>
+                </optgroup>
+              </select>
+            </div>
+            <div style="margin-top:1.2rem; padding-top:1rem; border-top:1px solid var(--border-color);">
+              <h4
+                style="color:var(--accent-cyan); font-size:0.95rem; margin-bottom:0.6rem; display:flex; align-items:center; gap:6px;">
+                <span>🔢</span> <span>બિલ નંબરિંગ સેટિંગ્સ (Default Bill Numbering)</span>
+              </h4>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>બિલ નંબર શૈલી (Style)</label>
+                  <select id="settingAgencyBillNoFormat" class="form-control"
+                    onchange="updateBillNoPreview('settings')">
+                    <option value="sequential">સરળ ક્રમિક નંબર (દા.ત. 1001, 1002)</option>
+                    <option value="prefix_seq">પ્રીફિક્સ + નંબર (દા.ત. PNS-1001)</option>
+                    <option value="month_seq">મહિનો-વર્ષ + નંબર (દા.ત. AUG26-001)</option>
+                    <option value="cust_based">ગ્રાહક આઈડી આધારિત (દા.ત. B-08-208)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>પ્રીફિક્સ ટેક્સ્ટ (Prefix)</label>
+                  <input type="text" id="settingAgencyBillNoPrefix" class="form-control" placeholder="PNS-, BILL-, INV-"
+                    oninput="updateBillNoPreview('settings')">
+                </div>
+                <div class="form-group">
+                  <label>શરૂઆતનો નંબર (Starting No.)</label>
+                  <input type="number" id="settingAgencyBillNoStartNum" class="form-control" value="1001"
+                    oninput="updateBillNoPreview('settings')">
+                </div>
+                <div class="form-group">
+                  <label>અંકોની લંબાઈ (Zero Padding)</label>
+                  <select id="settingAgencyBillNoPadding" class="form-control"
+                    onchange="updateBillNoPreview('settings')">
+                    <option value="0">સામાન્ય (દા.ત. 1, 10, 100)</option>
+                    <option value="3">૩ અંક (001, 002...)</option>
+                    <option value="4" selected>૪ અંક (0001, 0002...)</option>
+                    <option value="5">૫ અંક (00001...)</option>
+                  </select>
+                </div>
+              </div>
+              <div
+                style="background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); border-radius:6px; padding:6px 12px; margin-top:6px; font-size:0.85rem; color:#38bdf8;">
+                <span>પ્રથમ બિલ નંબર પ્રિવ્યૂ: </span>
+                <b id="settingsBillNoPreview">1001</b>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top:1rem;">
+              <span>💾</span> <span data-i18n="saveSettings">પ્રોફાઇલ સાચવો</span>
+            </button>
+          </form>
+        </div>
+
+        <div class="content-card">
+          <div class="card-title">
+            <span>🛡️</span> <span data-i18n="backupTitle">૧૦૦% ઓફલાઇન ડેટા બેકઅપ અને રીસ્ટોર</span>
+          </div>
+          <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;" data-i18n="backupDesc">
+            તમારા તમામ ગ્રાહકો, પેપર્સ, રોજિંદી એન્ટ્રીઓ અને બિલનો સુરક્ષિત બેકઅપ તમારા ફોન કે કમ્પ્યુટરમાં એક ક્લિકમાં
+            ડાઉનલોડ કરો.
+          </p>
+          <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+            <button class="btn btn-success" onclick="downloadBackupFile()">
+              <span>📥</span> <span data-i18n="downloadBackup">બેકઅપ ફાઈલ ડાઉનલોડ કરો</span>
+            </button>
+            <label class="btn btn-secondary" style="cursor:pointer; margin-bottom:0;">
+              <span>📤</span> <span data-i18n="restoreBackup">બેકઅપ ફાઈલ રીસ્ટોર કરો</span>
+              <input type="file" id="restoreFileInput" accept=".json" style="display:none;"
+                onchange="restoreBackupFile(event)">
+            </label>
+            <button class="btn btn-danger" onclick="resetDemoData()">
+              <span>🔄</span> <span data-i18n="resetData">નમૂનાનો (ડેમો) ડેટા ફરીથી લાવો</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- MS Access DB Import Card -->
+        <div class="content-card"
+          style="border: 1px solid rgba(14, 165, 233, 0.4); background: linear-gradient(145deg, rgba(14, 165, 233, 0.08) 0%, rgba(30, 41, 59, 0.8) 100%);">
+          <div class="card-title" style="color:#38bdf8;">
+            <span>🗄️</span> <span>MS Access (`.accdb`) માંથી સીધો ડેટા ઈમ્પોર્ટ કરો (Access DB Import)</span>
+          </div>
+          <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1rem; line-height:1.6;">
+            તમારા જૂના ડેસ્કટોપ સૉફ્ટવેર (<b>D:\Vendor_Soft\Data\C012627.accdb</b>) માંથી તમામ <b>૭૭૨ સક્રિય ગ્રાહકો
+              (Status=Yes)</b>, <b>૨૦
+              પેપર્સ (વાર મુજબ સબ્સ્ક્રિપ્શન)</b>, <b>૧૧ વિતરકો (Salesmen)</b>, <b>૧૨ કલેક્શન મેન</b>, અને <b>જૂની બાકી
+              રકમ</b> એક જ ક્લિકમાં આ નવી એપ્લિકેશનમાં લાવી શકાય
+            છે.
+          </p>
+          <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
+            <button class="btn btn-primary" id="btnDirectAccessImport" onclick="importAccessDataDirect()"
+              style="padding:0.75rem 1.4rem; font-size:0.95rem; box-shadow:0 0 15px rgba(14, 165, 233, 0.4);">
+              <span>⚡</span> <span>Access નો ડેટા ઈમ્પોર્ટ કરો (772 Active Customers)</span>
+            </button>
+            <span id="accessImportStatus" style="font-size:0.85rem; color:var(--text-dim);">ફાઈલ:
+              D:\Vendor_Soft\Data\C012627.accdb</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-nav-bar no-print">
+    <button class="mobile-nav-item active" onclick="switchView('dashboard')">
+      <span class="nav-icon">📊</span>
+      <span data-i18n="navDashboard">ડેશબોર્ડ</span>
+    </button>
+    <button class="mobile-nav-item" onclick="switchView('daily')">
+      <span class="nav-icon">🛵</span>
+      <span data-i18n="navDailyDelivery">વિતરણ</span>
+    </button>
+    <button class="mobile-nav-item" onclick="switchView('customers')">
+      <span class="nav-icon">👥</span>
+      <span data-i18n="navCustomers">ગ્રાહક</span>
+    </button>
+    <button class="mobile-nav-item" onclick="switchView('billing')">
+      <span class="nav-icon">🧾</span>
+      <span data-i18n="navBilling">બિલિંગ</span>
+    </button>
+    <button class="mobile-nav-item" onclick="switchView('payments')">
+      <span class="nav-icon">💰</span>
+      <span data-i18n="navPayments">ઉઘરાણી</span>
+    </button>
+  </nav>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- 1. Customer Modal -->
+  <div id="customerModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="customerModalTitle" data-i18n="addCustomer">નવા ગ્રાહકની નોંધણી</h3>
+        <button class="modal-close" onclick="closeModal('customerModal')">&times;</button>
+      </div>
+      <form id="customerForm" onsubmit="saveCustomerData(event)">
+        <input type="hidden" id="custFormId">
+
+        <!-- Row 1: Customer ID & Customer Name -->
+        <div class="form-grid" style="grid-template-columns: 140px 1fr; gap:0.85rem; margin-bottom:0.75rem;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="color:var(--accent-cyan); font-weight:700;">ગ્રાહક નં. / ID</label>
+            <input type="number" id="custFormCustNo" class="form-control" required min="1" placeholder="દા.ત. 1028"
+              readonly
+              style="font-weight:700; font-size:1.05rem; text-align:center; color:var(--accent-cyan); background:rgba(56,189,248,0.08); cursor:default;">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label data-i18n="customerName" style="font-weight:700;">ગ્રાહકનું પૂરું નામ (Customer Name)</label>
+            <input type="text" id="custFormName" class="form-control" required placeholder="ઉદા. મુકેશભાઈ એમ. શાહ"
+              style="font-weight:600;">
+          </div>
+        </div>
+
+        <!-- Row 2: Address & Society Short Name -->
+        <div class="form-grid" style="grid-template-columns: 1fr 180px; gap:0.85rem; margin-bottom:0.75rem;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label data-i18n="address">સરનામું (Address / સોસાયટી, મકાન નં.)</label>
+            <input type="text" id="custFormAddress" class="form-control" placeholder="સોસાયટી, મકાન નં, શેરી...">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="color:var(--accent-amber); font-weight:600;">સોસાયટી શોર્ટ નેમ</label>
+            <input type="text" id="custFormSocietyShort" class="form-control" placeholder="દા.ત. SHP, SNK, MB">
+          </div>
+        </div>
+
+        <!-- Row 3: Delivery Line, Delivery Sequence, Salesman (auto from route) -->
+        <div class="form-grid" style="grid-template-columns: 1fr 150px; gap:0.85rem; margin-bottom:0.75rem;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label data-i18n="customerLine">ડિલિવરી લાઇન (Line)</label>
+            <select id="custFormRoute" class="form-control" required onchange="onCustomerRouteChangedInForm()">
+              <!-- Injected via JS -->
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label data-i18n="sequenceNo" style="color:var(--accent-cyan); font-weight:700;">ડિલિવરી ક્રમ (Seq)</label>
+            <input type="number" id="custFormSeq" class="form-control" required value="1" min="1"
+              placeholder="દા.ત. 470" style="text-align:center; font-weight:700;">
+          </div>
+        </div>
+
+        <!-- Row 3A: Salesman & Collection Man (auto-filled from route, read-only) -->
+        <div class="form-grid"
+          style="grid-template-columns: 1fr 1fr; gap:0.85rem; margin-bottom:0.75rem; background:rgba(56,189,248,0.04); padding:0.6rem; border-radius:8px; border:1px solid rgba(56,189,248,0.15);">
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="color:var(--accent-cyan); font-weight:600; font-size:0.82rem;">🧑‍💼 વિતરક (Salesman) <small
+                style="color:var(--text-dim);">[લાઇન પરથી]</small></label>
+            <select id="custFormSalesman" class="form-control" disabled
+              style="opacity:0.8; cursor:default; background:rgba(56,189,248,0.06);">
+              <option value="">-- લાઇન પસંદ કરો --</option>
+              <!-- Injected via JS -->
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="color:var(--accent-emerald); font-weight:600; font-size:0.82rem;">💰 ઉઘરાણી સ્ટાફ (Collection
+              Man) <small style="color:var(--text-dim);">[લાઇન પરથી]</small></label>
+            <select id="custFormCollectionMan" class="form-control" disabled
+              style="opacity:0.8; cursor:default; background:rgba(52,211,153,0.06);">
+              <option value="">-- લાઇન પસંદ કરો --</option>
+              <!-- Injected via JS -->
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 3B: Smart Sequence Insertion (Insert After Existing Customer) -->
+        <div class="form-grid"
+          style="grid-template-columns: 1fr 1fr; gap:0.85rem; margin-bottom:0.75rem; background:rgba(56, 189, 248, 0.06); padding:0.6rem; border-radius:8px; border:1px dashed rgba(56, 189, 248, 0.35);">
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="color:var(--accent-cyan); font-weight:700; font-size:0.84rem;">
+              📍 કયા જૂના ગ્રાહક પછી ગોઠવવો? (Insert After)
+            </label>
+            <select id="custFormInsertAfter" class="form-control form-control-sm"
+              onchange="onInsertAfterCustomerChanged()">
+              <option value="">-- લાઇનના અંતે ઉમેરો (Add to End) --</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0; display:flex; flex-direction:column; justify-content:center;">
+            <label
+              style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:0.82rem; color:var(--text-muted); margin-top:10px;">
+              <input type="checkbox" id="custFormSyncCollSeq" checked>
+              <span>ઉઘરાણી ક્રમ પણ આ જ રાખવો</span>
+            </label>
+            <small id="custSeqHelpText" style="color:var(--accent-cyan); font-size:0.72rem; margin-top:2px;">(પસંદ કરેલ
+              ગ્રાહક પછીના તમામ ગ્રાહકો આપમેળે +1 ખસી જશે)</small>
+          </div>
+        </div>
+
+        <!-- Row 4: Collection Sequence -->
+        <div class="form-grid" style="grid-template-columns: 150px 1fr; gap:0.85rem; margin-bottom:0.75rem;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="color:var(--accent-emerald); font-weight:700;">ઉઘરાણી ક્રમ (Col. Seq)</label>
+            <input type="number" id="custFormCollSeq" class="form-control" value="1" min="1" placeholder="દા.ત. 90"
+              style="text-align:center; font-weight:700;">
+          </div>
+        </div>
+
+        <!-- Row 5: Del. Charge (Y/N), Del. Charge Amt, Print (Y/N) & Status (Active Y/N) (Matching Photo) -->
+        <div class="form-grid"
+          style="grid-template-columns: 130px 120px 110px 130px; gap:0.75rem; margin-bottom:0.75rem; background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border-color);">
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="font-size:0.82rem; font-weight:600; color:#38bdf8;">Del.Charge(Y/N)</label>
+            <select id="custFormDelChargeEnabled" class="form-control form-control-sm"
+              onchange="toggleCustomerDelChargeAmt()">
+              <option value="yes" selected>YES</option>
+              <option value="no">NO</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0;" id="custDelChargeAmtGroup">
+            <label style="font-size:0.82rem; font-weight:600; color:#38bdf8;">ચાર્જ રકમ (₹)</label>
+            <input type="number" id="custFormDelChargeAmt" class="form-control form-control-sm" value="10" min="0"
+              placeholder="10" style="text-align:center; font-weight:700;">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="font-size:0.82rem; font-weight:600;">Print(Y/N)</label>
+            <select id="custFormPrintBill" class="form-control form-control-sm">
+              <option value="yes" selected>Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="font-size:0.82rem; font-weight:600;">સ્થિતિ (Status)</label>
+            <select id="custFormStatus" class="form-control form-control-sm"
+              onchange="toggleCustomerInactiveDateInput()" style="padding-left:28px;">
+              <option value="active" selected>● સક્રિય (Active)</option>
+              <option value="inactive">● બંધ (Inactive)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Inactive Date Group (conditional) -->
+        <div class="form-group" id="custInactiveDateGroup" style="display:none; margin-bottom:0.75rem;">
+          <label style="color:#fb7185; font-weight:700;">બંધ થવાની તારીખ (Inactive From Date)</label>
+          <input type="date" id="custFormInactiveDate" class="form-control">
+          <small style="color:var(--text-dim);">આ તારીખ પછી બિલ બનશે નહીં</small>
+        </div>
+
+        <!-- Row 6: Mobile, WhatsApp & Opening Balance -->
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr 140px; gap:0.85rem; margin-bottom:0.75rem;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label data-i18n="mobileNo">મોબાઈલ નંબર</label>
+            <input type="tel" id="custFormMobile" class="form-control" placeholder="98250 00000">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label data-i18n="whatsappNo">વૉટ્સએપ નંબર</label>
+            <input type="tel" id="custFormWhatsApp" class="form-control" placeholder="98250 00000">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label data-i18n="openingBalance">જૂની બાકી રકમ (₹)</label>
+            <input type="number" id="custFormBalance" class="form-control" value="0" step="any"
+              style="text-align:right; font-weight:600;">
+          </div>
+        </div>
+
+        <!-- Row 7: Billing Type (Fixed amount comes from Item Master) -->
+        <div class="form-grid" style="grid-template-columns: 1fr; gap:0.85rem; margin-bottom:0.75rem;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label data-i18n="billingType">બિલિંગ પ્રકાર</label>
+            <select id="custFormBillingType" class="form-control">
+              <option value="daily" data-i18n="billingDaily">રોજિંદો ભાવ (દૈનિક ગણતરી)</option>
+              <option value="fixed" data-i18n="billingFixed">ફિક્સ માસિક રકમ (Fixed Contract)</option>
+            </select>
+            <small id="custBillingTypeHint" style="color:var(--text-dim); font-size:0.72rem; display:none;">ફિક્સ રકમ
+              આઈટમ માસ્ટર મુજબ ગણાશે</small>
+          </div>
+        </div>
+        <input type="hidden" id="custFormFixedAmt" value="0">
+
+        <!-- Row 8: Subscribed Papers -->
+        <div class="form-group" style="margin-bottom:0.75rem;">
+          <label data-i18n="subscribedPapers" style="font-weight:700; color:var(--accent-cyan);">ચાલુ પેપર્સ
+            (સબ્સ્ક્રિપ્શન પસંદ કરો)</label>
+          <div id="custPapersCheckboxList"
+            style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; background:rgba(0,0,0,0.25); padding:0.75rem; border-radius:var(--radius-sm); max-height:240px; overflow-y:auto; border:1px solid var(--border-color);">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+          <button type="button" class="btn btn-secondary btn-sm" id="custModalSwitchPaperBtn"
+            style="color:var(--accent-cyan); display:none;" onclick="openSwitchPaperFromCustomerModal()">
+            🔄 મહિનાની વચ્ચે પેપર બદલો
+          </button>
+          <div style="display:flex; gap:8px; margin-left:auto;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('customerModal')" data-i18n="cancel">રદ
+              કરો</button>
+            <button type="submit" class="btn btn-primary" data-i18n="saveCustomer">ગ્રાહક સાચવો</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 1.5 Switch Paper Mid-Month Modal -->
+  <div id="switchPaperModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:540px; width:95%;">
+      <div class="modal-header">
+        <h3 style="display:flex; align-items:center; gap:8px;">
+          <span>🔄</span> <span>મહિનાની વચ્ચે પેપર બદલો</span>
+        </h3>
+        <button class="modal-close" onclick="closeModal('switchPaperModal')">&times;</button>
+      </div>
+      <form id="switchPaperForm" onsubmit="saveSwitchPaper(event)">
+        <input type="hidden" id="switchCustId">
+
+        <div
+          style="background:rgba(56, 189, 248, 0.08); border:1px solid rgba(56, 189, 248, 0.25); border-radius:8px; padding:0.75rem 1rem; margin-bottom:1rem;">
+          <div style="font-size:0.8rem; color:var(--text-muted);">ગ્રાહક (Customer):</div>
+          <div id="switchCustNameDisplay"
+            style="font-size:1.15rem; font-weight:700; color:var(--text-primary); margin-top:2px;">-</div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label style="font-weight:600; font-size:0.9rem;">કઈ તારીખથી ફેરફાર કરવો છે? (Effective Date)</label>
+          <input type="date" id="switchEffectiveDate" class="form-control" required
+            style="font-size:0.95rem; font-weight:600;" onchange="updateSwitchSummary()">
+          <small id="switchDateExplainer"
+            style="display:block; margin-top:4px; color:var(--accent-amber); font-size:0.8rem;">
+            💡 આ તારીખથી નવું પેપર શરૂ થશે અને તેના આગલા દિવસ સુધી જૂનું પેપર ગણાશે.
+          </small>
+        </div>
+
+        <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:0.85rem; margin-bottom:1rem;">
+          <div class="form-group">
+            <label style="color:#fb7185; font-weight:600; font-size:0.88rem;">🔴 જૂનું પેપર (જે બંધ કરવું છે)</label>
+            <select id="switchOldPaper" class="form-control" required onchange="updateSwitchSummary()">
+              <!-- Injected via JS -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label style="color:#34d399; font-weight:600; font-size:0.88rem;">🟢 નવું પેપર (જે શરૂ કરવું છે)</label>
+            <select id="switchNewPaper" class="form-control" required onchange="updateSwitchSummary()">
+              <!-- Injected via JS -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:1.2rem;">
+          <label style="font-weight:600; font-size:0.88rem;">નવા પેપરના વિતરણ વાર (Delivery Days):</label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:4px; font-size:0.84rem;">
+            <label style="display:flex; align-items:center; gap:3px; cursor:pointer;"><input type="checkbox"
+                id="sw_day_sun" value="sun" checked> રવિ</label>
+            <label style="display:flex; align-items:center; gap:3px; cursor:pointer;"><input type="checkbox"
+                id="sw_day_mon" value="mon" checked> સોમ</label>
+            <label style="display:flex; align-items:center; gap:3px; cursor:pointer;"><input type="checkbox"
+                id="sw_day_tue" value="tue" checked> મંગળ</label>
+            <label style="display:flex; align-items:center; gap:3px; cursor:pointer;"><input type="checkbox"
+                id="sw_day_wed" value="wed" checked> બુધ</label>
+            <label style="display:flex; align-items:center; gap:3px; cursor:pointer;"><input type="checkbox"
+                id="sw_day_thu" value="thu" checked> ગુરુ</label>
+            <label style="display:flex; align-items:center; gap:3px; cursor:pointer;"><input type="checkbox"
+                id="sw_day_fri" value="fri" checked> શુક્ર</label>
+            <label style="display:flex; align-items:center; gap:3px; cursor:pointer;"><input type="checkbox"
+                id="sw_day_sat" value="sat" checked> શનિ</label>
+          </div>
+        </div>
+
+        <div id="switchLiveSummary"
+          style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:8px; padding:0.75rem; font-size:0.82rem; line-height:1.5; color:var(--text-muted); margin-bottom:1rem;">
+          <!-- Summary of what will happen -->
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('switchPaperModal')" data-i18n="cancel">રદ
+            કરો</button>
+          <button type="submit" class="btn btn-primary" style="background:linear-gradient(135deg, #0284c7, #2563eb);">🔄
+            પેપર ફેરફાર સાચવો</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Item Master Modal -->
+  <div id="itemModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:820px; width:96%;">
+      <div class="modal-header">
+        <h3 id="itemModalTitle" data-i18n="addItem">નવું પેપર ઉમેરો</h3>
+        <button class="modal-close" onclick="closeModal('itemModal')">&times;</button>
+      </div>
+      <form id="itemForm" onsubmit="saveItemData(event)">
+        <input type="hidden" id="itemFormId">
+        <div class="form-grid">
+          <div class="form-group">
+            <label data-i18n="itemCode">પેપર કોડ</label>
+            <input type="text" id="itemFormCode" class="form-control" required placeholder="GS, SAN, DB...">
+          </div>
+          <div class="form-group">
+            <label data-i18n="itemName">પેપર / સામયિકનું નામ</label>
+            <input type="text" id="itemFormName" class="form-control" required placeholder="ગુજરાત સમાચાર">
+          </div>
+          <div class="form-group">
+            <label data-i18n="itemType">પ્રકાર</label>
+            <select id="itemFormType" class="form-control">
+              <option value="daily" data-i18n="typeDaily">રોજિંદુ દૈનિક</option>
+              <option value="weekly" data-i18n="typeWeekly">સાપ્તાહિક</option>
+              <option value="monthly" data-i18n="typeMonthly">માસિક મેગેઝિન</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-i18n="monthlyFixBill">માસિક ફિક્સ બિલ (₹)</label>
+            <input type="number" id="itemFormMonthlyRate" class="form-control" value="0" step="0.01">
+          </div>
+          <div class="form-group">
+            <label>સ્થિતિ (Status)</label>
+            <select id="itemFormStatus" class="form-control">
+              <option value="active">🟢 સક્રિય (Active)</option>
+              <option value="inactive">🔴 બંધ (Inactive)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Day-wise Rates Section (2 Columns) -->
+        <div style="margin-top:1.2rem; border-top:1px solid var(--border-color); padding-top:1rem;">
+          <div
+            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+            <span style="font-weight:700; color:var(--accent-cyan); font-size:0.92rem;">📅 સોમ થી રવિવાર સુધીના વેચાણ
+              ભાવ (MRP) અને ખરીદ ભાવ (PTR)</span>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="copyMondayRatesToAllDays()">
+              <span>📋</span> <span data-i18n="copyMonRate">સોમવારનો ભાવ બધા દિવસ કોપી કરો</span>
+            </button>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap:0.75rem;">
+            <!-- Column 1: Mon to Thu -->
+            <div
+              style="background:rgba(255,255,255,0.02); border-radius:8px; padding:0.4rem; border:1px solid var(--border-color);">
+              <table class="custom-table" style="font-size:0.86rem; margin:0; width:100%;">
+                <thead>
+                  <tr>
+                    <th style="padding:0.4rem 0.5rem;">વાર (Day)</th>
+                    <th style="color:#38bdf8; width:82px; text-align:center; padding:0.4rem 0.2rem;">વેચાણ (₹)</th>
+                    <th style="color:#fb7185; width:82px; text-align:center; padding:0.4rem 0.2rem;">ખરીદ (₹)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:0.35rem 0.5rem;"><b>સોમવાર</b> <small
+                        style="color:var(--text-muted);">(Mon)</small></td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.25"
+                        class="form-control form-control-sm" id="rate_sale_mon" required value="5.0"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.01"
+                        class="form-control form-control-sm" id="rate_pur_mon" required value="3.35"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0.35rem 0.5rem;"><b>મંગળવાર</b> <small
+                        style="color:var(--text-muted);">(Tue)</small></td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.25"
+                        class="form-control form-control-sm" id="rate_sale_tue" required value="5.0"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.01"
+                        class="form-control form-control-sm" id="rate_pur_tue" required value="3.32"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0.35rem 0.5rem;"><b>બુધવાર</b> <small
+                        style="color:var(--text-muted);">(Wed)</small></td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.25"
+                        class="form-control form-control-sm" id="rate_sale_wed" required value="6.0"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.01"
+                        class="form-control form-control-sm" id="rate_pur_wed" required value="3.99"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0.35rem 0.5rem;"><b>ગુરુવાર</b> <small
+                        style="color:var(--text-muted);">(Thu)</small></td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.25"
+                        class="form-control form-control-sm" id="rate_sale_thu" required value="5.0"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.01"
+                        class="form-control form-control-sm" id="rate_pur_thu" required value="3.32"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Column 2: Fri to Sun + Note -->
+            <div
+              style="background:rgba(255,255,255,0.02); border-radius:8px; padding:0.4rem; border:1px solid var(--border-color);">
+              <table class="custom-table" style="font-size:0.86rem; margin:0; width:100%;">
+                <thead>
+                  <tr>
+                    <th style="padding:0.4rem 0.5rem;">વાર (Day)</th>
+                    <th style="color:#38bdf8; width:82px; text-align:center; padding:0.4rem 0.2rem;">વેચાણ (₹)</th>
+                    <th style="color:#fb7185; width:82px; text-align:center; padding:0.4rem 0.2rem;">ખરીદ (₹)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:0.35rem 0.5rem;"><b>શુક્રવાર</b> <small
+                        style="color:var(--text-muted);">(Fri)</small></td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.25"
+                        class="form-control form-control-sm" id="rate_sale_fri" required value="5.0"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.01"
+                        class="form-control form-control-sm" id="rate_pur_fri" required value="3.32"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0.35rem 0.5rem;"><b>શનિવાર</b> <small
+                        style="color:var(--text-muted);">(Sat)</small></td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.25"
+                        class="form-control form-control-sm" id="rate_sale_sat" required value="5.0"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.01"
+                        class="form-control form-control-sm" id="rate_pur_sat" required value="3.32"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem;">
+                    </td>
+                  </tr>
+                  <tr style="background:rgba(239, 68, 68, 0.14);">
+                    <td style="padding:0.35rem 0.5rem;"><b style="color:#fb7185;">રવિવાર</b> <small
+                        style="color:#fca5a5;">(Sun)</small></td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.25"
+                        class="form-control form-control-sm" id="rate_sale_sun" required value="6.0"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem; border-color:rgba(239, 68, 68, 0.4);">
+                    </td>
+                    <td style="text-align:center; padding:0.35rem 0.2rem;"><input type="number" step="0.01"
+                        class="form-control form-control-sm" id="rate_pur_sun" required value="3.99"
+                        style="max-width:74px; margin:0 auto; text-align:center; font-weight:600; padding:0.3rem 0.2rem; border-color:rgba(239, 68, 68, 0.4);">
+                    </td>
+                  </tr>
+                  <tr style="background:rgba(56, 189, 248, 0.05); height:46px;">
+                    <td colspan="3"
+                      style="text-align:center; color:var(--text-muted); font-size:0.78rem; vertical-align:middle; padding:0.3rem 0.5rem;">
+                      💡 <span style="color:#38bdf8;">રવિવાર વિશેષ પૂર્તિ / સ્પેશિયલ ભાવ</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rate Revision (Mid-month rate change) Section -->
+        <div
+          style="background:rgba(56, 189, 248, 0.08); border:1px solid rgba(56, 189, 248, 0.3); border-radius:8px; padding:10px 14px; margin-top:1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div>
+              <span style="font-weight:700; color:#38bdf8;">📅 મહિનાની વચ્ચેથી ભાવફેરફાર (Rate Revision)?</span>
+              <p style="margin:2px 0 0 0; font-size:0.8rem; color:var(--text-muted);">જો મહિનાની અધવચ્ચેથી ભાવ બદલાયો
+                હોય તો લાગુ તારીખ પસંદ કરો (જૂના દિવસો જૂના ભાવે અને નવા દિવસો નવા ભાવે આપોઆપ ગણાશે).</p>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <label style="font-size:0.88rem; font-weight:600; margin:0; white-space:nowrap;">લાગુ તારીખ:</label>
+              <input type="date" id="itemFormEffectiveDate" class="form-control" style="width:160px; padding:4px 8px;">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('itemModal')" data-i18n="cancel">રદ
+            કરો</button>
+          <button type="submit" class="btn btn-primary" data-i18n="saveItem">સાચવો</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Vacation Modal -->
+  <div id="vacationModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:650px; width:95%;">
+      <div class="modal-header">
+        <h3 data-i18n="addVacationEntry">રજાની નવી નોંધણી કરો</h3>
+        <button class="modal-close" onclick="closeModal('vacationModal')">&times;</button>
+      </div>
+      <form id="vacationForm" onsubmit="saveVacationData(event)">
+        <!-- Quick Filter row: Salesman Combo & Customer Search -->
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:0.75rem;">
+          <div class="form-group">
+            <label style="color:#60a5fa; font-weight:600;">👨‍💼 સેલ્સમેન ફિલ્ટર</label>
+            <select id="vacSalesmanFilter" class="form-control" onchange="filterVacationCustomerList()">
+              <option value="all">-- બધા સેલ્સમેન --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label style="color:#60a5fa; font-weight:600;">🔍 ગ્રાહક શોધો (ID / નામ / સોસાયટી)</label>
+            <input type="text" id="vacCustomerSearch" class="form-control" placeholder="નંબર અથવા નામ લખો..."
+              oninput="filterVacationCustomerList()">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <label data-i18n="selectCustomer" style="font-weight:600;">ગ્રાહક પસંદ કરો</label>
+            <span style="font-size:0.8rem; color:#38bdf8;"><span id="vacCustomerCount">0</span> ગ્રાહક મળ્યા</span>
+          </div>
+          <select id="vacFormCustomer" class="form-control" size="6" required
+            style="font-size:0.9rem; height:auto; min-height:140px; font-family:monospace; line-height:1.6; padding:6px 10px;">
+            <!-- Injected via JS -->
+          </select>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label data-i18n="startDate">આ તારીખથી શરૂ</label>
+            <input type="date" id="vacFormStart" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label data-i18n="endDate">આ તારીખ સુધી</label>
+            <input type="date" id="vacFormEnd" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="vacationReason">કારણ / નોંધ</label>
+          <input type="text" id="vacFormReason" class="form-control" placeholder="ગામડે ગયેલ છે / બહારગામ...">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('vacationModal')" data-i18n="cancel">રદ
+            કરો</button>
+          <button type="submit" class="btn btn-primary">રજા સાચવો</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Paper Holiday Modal -->
+  <div id="paperHolidayModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:680px; width:95%;">
+      <div class="modal-header">
+        <h3 data-i18n="addPaperHoliday">પેપરની રજા ઉમેરો (એક સાથે બધા કે પસંદગીના પેપર)</h3>
+        <button class="modal-close" onclick="closeModal('paperHolidayModal')">&times;</button>
+      </div>
+      <form id="paperHolidayForm" onsubmit="savePaperHolidayData(event)">
+        <div class="form-group">
+          <div
+            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; flex-wrap:wrap; gap:6px;">
+            <label style="font-weight:600; color:#38bdf8;">📰 રજા રાખવાના પેપર્સ ટીક કરો</label>
+            <div style="display:flex; gap:0.5rem;">
+              <button type="button" class="btn btn-sm btn-secondary" onclick="toggleAllHolidayPapers(true)">✅ બધા પસંદ
+                કરો</button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="toggleAllHolidayPapers(false)">❌ બધા
+                હટાવો</button>
+            </div>
+          </div>
+          <div id="holPaperCheckboxList"
+            style="max-height:200px; overflow-y:auto; border:1px solid var(--border-color); border-radius:8px; padding:10px; background:rgba(0,0,0,0.25); display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:8px;">
+            <!-- Checkboxes injected via JS -->
+          </div>
+          <small style="color:var(--text-muted); display:block; margin-top:4px;">જે પેપર્સમાં રજા રાખવી હોય તે ટીક કરો
+            (દા.ત. દિવાળી કે રાષ્ટ્રીય રજા પર બધા પસંદ કરો)</small>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>આ તારીખથી</label>
+            <input type="date" id="holFormStart" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>આ તારીખ સુધી</label>
+            <input type="date" id="holFormEnd" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('paperHolidayModal')">રદ કરો</button>
+          <button type="submit" class="btn btn-primary">રજા સાચવો</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Mass Issue Modal -->
+  <div id="massIssueModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:560px; width:95%;">
+      <div class="modal-header">
+        <h3>🎁 નવું બોનસ પેપર (Mass Issue)</h3>
+        <button class="modal-close" onclick="closeModal('massIssueModal')">&times;</button>
+      </div>
+      <form id="massIssueForm" onsubmit="saveMassIssueData(event)">
+        <div class="form-group">
+          <label>પેપર પસંદ કરો (જે બોનસ તરીકે આપવાનું છે)</label>
+          <select id="massFormPaper" class="form-control" required onchange="onMassPaperOrDateChange()"></select>
+        </div>
+        <div class="form-group">
+          <label>કઈ તારીખે આપવાનું છે?</label>
+          <input type="date" id="massFormDate" class="form-control" required onchange="onMassPaperOrDateChange()">
+        </div>
+
+        <!-- Target Customers Selection -->
+        <div class="form-group" style="background:rgba(56,189,248,0.06); padding:0.85rem; border-radius:8px; border:1px solid rgba(56,189,248,0.25);">
+          <label style="font-weight:700; color:var(--accent-cyan); display:block; margin-bottom:0.5rem;">
+            🎯 કયા ગ્રાહકોને બોનસ પેપર આપવું છે?
+          </label>
+          <div style="display:flex; flex-direction:column; gap:0.6rem;">
+            <label style="display:flex; align-items:flex-start; gap:0.6rem; cursor:pointer; font-weight:600; margin:0;">
+              <input type="radio" name="massFormTargetType" id="massTargetAll" value="all" checked style="margin-top:0.2rem; cursor:pointer;">
+              <div>
+                <span>🌐 તમારા બધા જ ગ્રાહકોને (All Customers)</span>
+                <small style="color:var(--text-muted); display:block; font-weight:normal; font-size:0.8rem;">
+                  બધા જ સક્રિય ગ્રાહકોને આ બોનસ પેપર વિતરણ થશે.
+                </small>
+              </div>
+            </label>
+            <label style="display:flex; align-items:flex-start; gap:0.6rem; cursor:pointer; font-weight:600; margin:0;">
+              <input type="radio" name="massFormTargetType" id="massTargetDayWise" value="day_wise" style="margin-top:0.2rem; cursor:pointer;">
+              <div>
+                <span>📅 <b id="massTargetDayNameText" style="color:var(--accent-amber);">સોમવાર</b> ના બધા ગ્રાહકોને</span>
+                <small style="color:var(--text-muted); display:block; font-weight:normal; font-size:0.8rem;">
+                  માત્ર <span id="massTargetDaySubText">સોમવારે</span> જે ગ્રાહકો પેપર લેતા હોય તેમને જ આ બોનસ પેપર મળશે.
+                </small>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:0.75rem;">
+          <div class="form-group">
+            <label>વેચાણ ભાવ (MRP) ₹</label>
+            <input type="number" step="0.25" id="massFormRate" class="form-control" value="0" required placeholder="દા.ત. 5.0">
+            <small style="color:var(--text-muted); font-size:0.75rem;">ગ્રાહક પાસેથી લેવાનો ભાવ (જો મફત હોય તો 0)</small>
+          </div>
+          <div class="form-group">
+            <label style="color:#fb7185; font-weight:700;">ડેપો ખરીદ ભાવ (PTR) ₹</label>
+            <input type="number" step="0.01" id="massFormPurchaseRate" class="form-control" value="3.32" required placeholder="દા.ત. 3.32" style="border-color:#fb7185; font-weight:700; color:#fb7185;">
+            <small style="color:var(--text-muted); font-size:0.75rem;">આવતીકાલની ખરીદી ચૂકવણી માટે ખરીદી કિંમત</small>
+          </div>
+        </div>
+
+        <div class="form-group"
+          style="background:var(--bg-hover, rgba(255,255,255,0.05)); padding:0.75rem; border-radius:8px; border:1px solid var(--border-color, #334155);">
+          <label
+            style="display:flex; align-items:center; gap:0.6rem; cursor:pointer; font-weight:600; margin-bottom:0.25rem;">
+            <input type="checkbox" id="massFormHolidayOthers" checked
+              style="width:1.2rem; height:1.2rem; cursor:pointer;">
+            <span>આ દિવસે અન્ય તમામ રેગ્યુલર પેપરોની રજા રાખવી?</span>
+          </label>
+          <small style="color:var(--accent-cyan, #38bdf8); display:block; line-height:1.4;">
+            ✓ જો સિલેક્ટ હશે તો ગ્રાહકોને માત્ર આ એક જ પેપર ગણાશે અને નિયમિત પેપરનું બિલ નહીં લાગે (તહેવારની રજા
+            હોવાથી).
+          </small>
+        </div>
+        <div class="form-group">
+          <label>નોંધ / કારણ</label>
+          <input type="text" id="massFormReason" class="form-control" placeholder="દા.ત. દિવાળી વિશેષાંક">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('massIssueModal')">રદ કરો</button>
+          <button type="submit" class="btn btn-primary">સાચવો (Save)</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Payment Collection Modal -->
+  <div id="paymentModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:560px;">
+      <div class="modal-header">
+        <h3 data-i18n="recordPayment">પાવતી બનાવો (નાણાં જમા)</h3>
+        <button class="modal-close" onclick="closeModal('paymentModal')">&times;</button>
+      </div>
+      <form id="paymentForm" onsubmit="event.preventDefault(); submitPaymentForm('save');">
+        <!-- Live Smart Search by Bill No, Cust No, Name, Mobile -->
+        <div class="form-group" style="position:relative; margin-bottom:0.85rem;">
+          <label style="font-weight:700; color:var(--accent-cyan); display:flex; justify-content:space-between; align-items:center;">
+            <span>🔍 બિલ નં. / ગ્રાહક નં. / નામ / મોબાઈલથી શોધો:</span>
+            <small style="color:var(--text-dim); font-weight:normal;">(પ્રીફિક્સ વગર પણ શોધાશે)</small>
+          </label>
+          <div style="position:relative;">
+            <input type="text" id="payFormCustSearch" class="form-control" placeholder="દા.ત. 1001, PNS-1001, રમેશભાઈ, 98250..." autocomplete="off" oninput="onPaymentSearchInput(this.value)" style="padding-right:32px;">
+            <span id="payFormSearchClear" onclick="clearPaymentSearch()" style="display:none; position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:1.15rem; color:var(--text-muted); line-height:1;" title="સર્ચ સાફ કરો">&times;</span>
+          </div>
+          <div id="payFormSearchDropdown" style="display:none; position:absolute; top:100%; left:0; right:0; max-height:190px; overflow-y:auto; background:var(--card-bg, #1e293b); border:1.5px solid var(--accent-cyan, #0ea5e9); border-radius:6px; box-shadow:0 10px 25px rgba(0,0,0,0.5); z-index:999; margin-top:2px; padding:4px 0;">
+            <!-- Dropdown search items injected via JS -->
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="customer">ગ્રાહક પસંદ કરો (Customer)</label>
+          <select id="payFormCustomer" class="form-control" required onchange="onPaymentCustomerChanged()">
+            <!-- Injected via JS -->
+          </select>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label data-i18n="amountPaid">મળેલ રકમ (₹)</label>
+            <input type="number" id="payFormAmount" class="form-control" required step="any" min="1">
+          </div>
+          <div class="form-group">
+            <label data-i18n="paymentMode">ચુકવણી પ્રકાર</label>
+            <select id="payFormMode" class="form-control">
+              <option value="cash" data-i18n="modeCash">💵 રોકડ (Cash)</option>
+              <option value="upi" data-i18n="modeUPI">📱 UPI / ઓનલાઇન</option>
+              <option value="cheque" data-i18n="modeCheque">📝 ચેક (Cheque)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-i18n="paymentDate">તારીખ</label>
+            <input type="date" id="payFormDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label data-i18n="referenceNo">રેફરન્સ / ટ્રાન્ઝેક્શન નં.</label>
+            <input type="text" id="payFormRef" class="form-control" placeholder="UPI123456 / ચેક નં.">
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:0.6rem; flex-wrap:wrap; margin-top:1.2rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('paymentModal')" data-i18n="cancel">રદ કરો</button>
+          <button type="button" class="btn btn-success" onclick="submitPaymentForm('save')">💾 નાણાં જમા કરો</button>
+          <button type="button" class="btn" style="background:#22c55e; color:#ffffff; font-weight:700; border:none; box-shadow:0 2px 8px rgba(34,197,94,0.35);" onclick="submitPaymentForm('save_and_whatsapp')">📲 નાણાં જમા & WhatsApp રસીદ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. Dynamic UPI QR Modal -->
+  <div id="upiModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:380px;">
+      <div class="modal-header">
+        <h3 data-i18n="scanToPayUPI">UPI દ્વારા સ્કેન કરીને ચૂકવો</h3>
+        <button class="modal-close" onclick="closeModal('upiModal')">&times;</button>
+      </div>
+      <div class="upi-qr-card">
+        <div class="agency-name" id="upiModalAgency">શ્રી ગણેશ ન્યૂઝ એજન્સી</div>
+        <div style="font-size:0.85rem; color:#64748b;" id="upiModalCustName">ગ્રાહક: મુકેશભાઈ શાહ</div>
+        <div class="bill-amt" id="upiModalAmount">₹380</div>
+        <div class="qr-svg-wrapper" id="upiModalQRContainer">
+          <!-- Injected via pure JS qrcode.js -->
+        </div>
+        <div class="upi-id-badge" id="upiModalVPA">shreeganesh.news@upi</div>
+        <div style="margin-top:1rem; display:flex; gap:0.5rem; width:100%;">
+          <a id="upiDirectPayLink" href="#" class="btn btn-primary btn-sm" style="flex:1;">
+            PhonePe / GPay
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Route Modal -->
+  <div id="routeModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:500px;">
+      <div class="modal-header">
+        <h3 id="routeModalTitle">ડિલિવરી લાઇન</h3>
+        <button class="modal-close" onclick="closeModal('routeModal')">&times;</button>
+      </div>
+      <form id="routeForm" onsubmit="saveRouteData(event)">
+        <input type="hidden" id="routeFormId">
+        <div class="form-group">
+          <label>લાઇન કોડ (Line Code)</label>
+          <input type="text" id="routeFormCode" class="form-control" required placeholder="દા.ત. L-01, A-LINE">
+        </div>
+        <div class="form-group">
+          <label>લાઇનનું નામ (Line Name / Society Area)</label>
+          <input type="text" id="routeFormName" class="form-control" required placeholder="દા.ત. સરદાર નગર + A સોસાયટી">
+        </div>
+        <div class="form-group">
+          <label>નિયુક્ત વિતરક / હોકર (Salesman)</label>
+          <select id="routeFormSalesman" class="form-control">
+            <option value="">-- વિતરક પસંદ કરો --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>નિયુક્ત ઉઘરાણી સ્ટાફ (Collection Man)</label>
+          <select id="routeFormCollectionMan" class="form-control">
+            <option value="">-- કલેક્શન મેન પસંદ કરો --</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('routeModal')">રદ કરો</button>
+          <button type="submit" class="btn btn-primary">સાચવો (Save)</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Salesman Modal -->
+  <div id="salesmanModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:500px;">
+      <div class="modal-header">
+        <h3 id="salesmanModalTitle">વિતરક / હોકર (Salesman)</h3>
+        <button class="modal-close" onclick="closeModal('salesmanModal')">&times;</button>
+      </div>
+      <form id="salesmanForm" onsubmit="saveSalesmanData(event)">
+        <input type="hidden" id="salesmanFormId">
+        <div class="form-group">
+          <label>વિતરકનું પૂરું નામ</label>
+          <input type="text" id="salesmanFormName" class="form-control" required placeholder="દા.ત. મુકેશભાઈ પરમાર">
+        </div>
+        <div class="form-group">
+          <label>મોબાઈલ નંબર</label>
+          <input type="tel" id="salesmanFormMobile" class="form-control" placeholder="98250 00000">
+        </div>
+        <div class="form-group">
+          <label>માસિક પગાર (Salary ₹)</label>
+          <input type="number" id="salesmanFormComm" class="form-control" placeholder="દા.ત. ₹4000 માસિક પગાર" step="any">
+        </div>
+        <div class="form-group">
+          <label>નોંધ / વિગત</label>
+          <input type="text" id="salesmanFormNotes" class="form-control" placeholder="સવારનો સમય, સાયકલ/બાઇક વગેરે...">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('salesmanModal')">રદ કરો</button>
+          <button type="submit" class="btn btn-primary">સાચવો (Save)</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Collection Man Modal -->
+  <div id="collectionManModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:500px;">
+      <div class="modal-header">
+        <h3 id="collectionManModalTitle">ઉઘરાણી સ્ટાફ (Collection Man)</h3>
+        <button class="modal-close" onclick="closeModal('collectionManModal')">&times;</button>
+      </div>
+      <form id="collectionManForm" onsubmit="saveCollectionManData(event)">
+        <input type="hidden" id="collectionManFormId">
+        <div class="form-group">
+          <label>કલેક્શન મેનનું નામ</label>
+          <input type="text" id="collManFormName" class="form-control" required placeholder="દા.ત. દિનેશભાઈ શાહ">
+        </div>
+        <div class="form-group">
+          <label>મોબાઈલ નંબર</label>
+          <input type="tel" id="collManFormMobile" class="form-control" placeholder="98980 00000">
+        </div>
+        <div class="form-group">
+          <label>માસિક પગાર (Salary ₹)</label>
+          <input type="number" id="collManFormComm" class="form-control" placeholder="દા.ત. ₹3500 માસિક પગાર" step="any">
+        </div>
+        <div class="form-group">
+          <label>નોંધ / વિસ્તાર</label>
+          <input type="text" id="collManFormNotes" class="form-control" placeholder="સાંજનો સમય, દુકાનો, સોસાયટી...">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('collectionManModal')">રદ કરો</button>
+          <button type="submit" class="btn btn-primary">સાચવો (Save)</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5B. Route Order & Sequence Organizer Modal (Drag & Drop) -->
+  <div id="routeOrderModal" class="modal-overlay">
+    <div class="modal-content"
+      style="max-width:920px; width:95%; max-height:90vh; display:flex; flex-direction:column;">
+      <div class="modal-header">
+        <div>
+          <h3 style="margin:0; font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+            <span>🔀</span> <span>લાઇન વિતરણ અને ઉઘરાણી ક્રમ ગોઠવો (Sequence Organizer)</span>
+          </h3>
+          <small style="color:var(--text-dim); font-size:0.8rem;">વિતરણ ક્રમ અને ઉઘરાણી ક્રમ અલગ-અલગ સેટ કરો અથવા બંને
+            સરખા રાખો</small>
+        </div>
+        <button class="modal-close" onclick="closeModal('routeOrderModal')">&times;</button>
+      </div>
+
+      <!-- Mode Selector Tabs: Delivery Seq vs Collection Seq -->
+      <div
+        style="padding:0.6rem 1.25rem; background:#0f172a; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div class="sub-tabs-bar" style="margin:0; padding:0; border:none;">
+          <button type="button" class="sub-tab-btn active" id="seqOrganizerModeDeliveryBtn"
+            onclick="switchSequenceOrganizerMode('delivery')">
+            🚴‍♂️ ૧. વિતરક / ડિલિવરી ક્રમ (Delivery Seq)
+          </button>
+          <button type="button" class="sub-tab-btn" id="seqOrganizerModeCollectionBtn"
+            onclick="switchSequenceOrganizerMode('collection')">
+            💼 ૨. ઉઘરાણી ક્રમ (Collection Seq)
+          </button>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="copyDeliveryToCollectionSeq()"
+            style="font-size:0.78rem; padding:4px 10px;">
+            📋 ઉઘરાણી ક્રમ = ડિલિવરી ક્રમ કરો
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="copyCollectionToDeliverySeq()"
+            style="font-size:0.78rem; padding:4px 10px;">
+            📋 ડિલિવરી ક્રમ = ઉઘરાણી ક્રમ કરો
+          </button>
+        </div>
+      </div>
+
+      <div
+        style="padding:0.65rem 1.25rem; background:rgba(255,255,255,0.02); border-bottom:1px solid var(--border-color); display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <label style="font-weight:600; font-size:0.88rem; color:var(--accent-cyan);">ડિલિવરી લાઇન:</label>
+          <select id="routeOrderSelectRoute" class="form-control form-control-sm" style="width:200px;"
+            onchange="loadCustomersForRouteOrder()">
+            <!-- Injected via JS -->
+          </select>
+        </div>
+        <div id="routeOrderStaffInfo" style="font-size:0.85rem; color:var(--text-muted);">
+          <!-- Injected via JS -->
+        </div>
+        <div style="margin-left:auto; display:flex; align-items:center; gap:6px;">
+          <input type="checkbox" id="routeOrderSyncColl">
+          <label for="routeOrderSyncColl" style="font-size:0.82rem; cursor:pointer; color:var(--text-muted);">બંને ક્રમ
+            એકસરખા સાચવવા</label>
+        </div>
+      </div>
+
+      <div style="flex:1; overflow-y:auto; padding:0.5rem 1.25rem;">
+        <div class="table-responsive">
+          <table class="custom-table" style="font-size:0.88rem;">
+            <thead>
+              <tr style="position:sticky; top:0; background:var(--bg-card); z-index:2;">
+                <th style="width:45px; text-align:center;">ખસેડો</th>
+                <th style="width:75px; text-align:center;" id="seqOrderThLabel">નવો ક્રમ</th>
+                <th style="width:80px; text-align:center;">ગ્રાહક નં.</th>
+                <th>ગ્રાહકનું નામ અને સોસાયટી / સરનામું</th>
+                <th>પેપર્સ</th>
+                <th style="width:110px; text-align:center;">બટનથી ખસેડો</th>
+              </tr>
+            </thead>
+            <tbody id="routeOrderTbody">
+              <!-- Injected via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.85rem; color:var(--accent-amber); font-weight:600;" id="routeOrderCountBadge">
+          કુલ: 0 ગ્રાહકો
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('routeOrderModal')">રદ કરો</button>
+          <button type="button" class="btn btn-primary" onclick="saveRouteOrder()">
+            <span>💾</span> <span>નવો ક્રમ સાચવો (Save Sequence)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Print Slip Modal (Single Bill) -->
+  <div id="slipModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:550px; background:#ffffff; color:#000000;">
+      <div class="modal-header"
+        style="border-color:#e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <h3 style="color:#0f172a; margin:0;" data-i18n="printBillSlip">બિલ પ્રિન્ટ સ્લિપ</h3>
+          <select id="singlePrintFormatSelect" class="form-control"
+            style="width:255px; padding:3px 8px; font-size:0.8rem;" onchange="changeSingleSlipFormat()">
+            <optgroup label="A4 ૪-ઇન-૧ (4 બિલ પ્રતિ પેજ - A6)">
+              <option value="4in1_perfect_memo">✂️ ૪A: પરફેક્ટ ક્રેડિટ મેમો (Image 1 ઓરિજિનલ)</option>
+              <option value="4in1_ocean_blue">✂️ ૪B: મોડર્ન ઓશન બ્લુ (Image 2 TL)</option>
+              <option value="4in1_vintage_parchment">✂️ ૪C: વિન્ટેજ પાર્ચમેન્ટ / બ્રાઉન (Image 2 TR)</option>
+              <option value="4in1_magenta_wave">✂️ ૪D: વાઇબ્રન્ટ મેજેન્ટા વેવ (Image 2 BL)</option>
+              <option value="4in1_eco_green">✂️ ૪E: ઇકો ફ્રેશ ગ્રીન / નેચર (Image 2 BR)</option>
+              <option value="4in1_clean_bw">✂️ ૪F: મોનોક્રોમ ક્લીન ન્યૂઝપેપર (Image 3 B&W)</option>
+              <option value="4in1_classic">✂️ ૪H: સ્ટાન્ડર્ડ B/W ક્રેડિટ મેમો</option>
+              <option value="4in1_modern">✂️ ૪I: મોડર્ન એલિગન્ટ કાર્ડ</option>
+              <option value="4in1_stub">✂️ ૪J: સ્લિપ + ઉઘરાણી પાવતી (Stub)</option>
+            </optgroup>
+            <optgroup label="A4 ૩-ઇન-૧ (3 આડી સ્લિપ પ્રતિ પેજ - Strip)">
+              <option value="3in1_wide">૩A: વાઇડ હોરિઝોન્ટલ લેજર સ્લિપ</option>
+              <option value="3in1_stub">૩B: સ્લિપ + સાઇડ ઉઘરાણી પહોંચ</option>
+            </optgroup>
+            <optgroup label="A4 ૨-ઇન-૧ (2 બિલ પ્રતિ પેજ - Half Page)">
+              <option value="2in1_detailed">૨A: વિગતવાર આઇટમાઇઝ્ડ બિલ</option>
+              <option value="2in1_modern">૨B: પ્રીમિયમ કોમર્શિયલ ઇન્વોઇસ</option>
+              <option value="2in1_counterfoil">૨C: હાફ પેજ + નીચે ઉઘરાણી પહોંચ</option>
+            </optgroup>
+            <optgroup label="અન્ય ફોર્મેટ્સ">
+              <option value="thermal">🧾 ૫૮/૮૦mm થર્મલ રસીદ</option>
+            </optgroup>
+          </select>
+        </div>
+        <button class="modal-close" style="color:#0f172a;" onclick="closeModal('slipModal')">&times;</button>
+      </div>
+      <div id="slipContentContainer" style="padding:0.75rem; max-height:75vh; overflow-y:auto;">
+        <!-- Injected via JS -->
+      </div>
+      <div class="modal-footer" style="border-color:#e2e8f0; display:flex; justify-content:space-between;">
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('slipModal')" data-i18n="cancel">બંધ કરો</button>
+        <button class="btn btn-primary btn-sm" onclick="triggerSingleSlipPrint()">🖨️ પ્રિન્ટ સ્લિપ (Print)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Bulk Print A4 Modal -->
+  <div id="bulkPrintModal" class="modal-overlay">
+    <div class="modal-content"
+      style="max-width:940px; width:95%; background:#1e293b; color:#ffffff; max-height:92vh; display:flex; flex-direction:column;">
+      <div class="modal-header"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.3rem;">🖨️</span>
+          <h3 style="margin:0; color:#fff;">A4 બલ્ક બિલ પ્રિન્ટિંગ</h3>
+          <span id="bulkPrintCountBadge" class="badge badge-blue" style="font-size:0.8rem;">0 બિલ (0 A4 પેજ)</span>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <select id="bulkPrintFormatSelect" class="form-control" style="width:260px;"
+            onchange="renderBulkPrintSheets()">
+            <optgroup label="A4 ૪-ઇન-૧ (4 બિલ પ્રતિ પેજ - A6)">
+              <option value="4in1_perfect_memo">✂️ ૪A: પરફેક્ટ ક્રેડિટ મેમો (Image 1 ઓરિજિનલ)</option>
+              <option value="4in1_ocean_blue">✂️ ૪B: મોડર્ન ઓશન બ્લુ (Image 2 TL)</option>
+              <option value="4in1_vintage_parchment">✂️ ૪C: વિન્ટેજ પાર્ચમેન્ટ / બ્રાઉન (Image 2 TR)</option>
+              <option value="4in1_magenta_wave">✂️ ૪D: વાઇબ્રન્ટ મેજેન્ટા વેવ (Image 2 BL)</option>
+              <option value="4in1_eco_green">✂️ ૪E: ઇકો ફ્રેશ ગ્રીન / નેચર (Image 2 BR)</option>
+              <option value="4in1_clean_bw">✂️ ૪F: મોનોક્રોમ ક્લીન ન્યૂઝપેપર (Image 3 B&W)</option>
+              <option value="4in1_classic">✂️ ૪G: સ્ટાન્ડર્ડ B/W મેમો</option>
+              <option value="4in1_modern">✂️ ૪H: મોડર્ન એલિગન્ટ કાર્ડ</option>
+              <option value="4in1_stub">✂️ ૪I: સ્લિપ + ઉઘરાણી પાવતી (Stub)</option>
+            </optgroup>
+            <optgroup label="A4 ૩-ઇન-૧ (3 આડી સ્લિપ પ્રતિ પેજ - Strip)">
+              <option value="3in1_wide">📑 ૩A: વાઇડ હોરિઝોન્ટલ સ્લિપ</option>
+              <option value="3in1_stub">📑 ૩B: સ્લિપ + સાઇડ પાવતી (Stub)</option>
+            </optgroup>
+            <optgroup label="A4 ૨-ઇન-૧ (2 બિલ પ્રતિ પેજ - Half Page)">
+              <option value="2in1_detailed">📑 ૨A: વિગતવાર હિસાબી બિલ</option>
+              <option value="2in1_modern">📑 ૨B: પ્રીમિયમ કોમર્શિયલ ઇન્વોઇસ</option>
+              <option value="2in1_counterfoil">🧾 ૨C: બિલ + નીચે ઉઘરાણી પાવતી</option>
+            </optgroup>
+          </select>
+          <select id="bulkPrintRouteSelect" class="form-control" style="width:145px;"
+            onchange="renderBulkPrintSheets()">
+            <option value="all">બધી લાઇન</option>
+          </select>
+          <select id="bulkPrintSalesmanSelect" class="form-control" style="width:145px;"
+            onchange="renderBulkPrintSheets()">
+            <option value="all">બધા વિતરક</option>
+          </select>
+          <button class="modal-close" onclick="closeModal('bulkPrintModal')">&times;</button>
+        </div>
+      </div>
+      <div id="bulkPrintSheetsContainer"
+        style="flex:1; overflow-y:auto; padding:1.5rem; background:#0f172a; border-radius:6px;">
+        <!-- Injected via JS -->
+      </div>
+      <div class="modal-footer"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.82rem; color:var(--text-muted);">ℹ️ પ્રિન્ટ કરતી વખતે "Destination: Save as PDF" અથવા
+          તમારું પ્રિન્ટર પસંદ કરો.</span>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-secondary btn-sm" onclick="closeModal('bulkPrintModal')">બંધ કરો</button>
+          <button class="btn btn-primary" onclick="triggerA4Print()" style="padding:6px 18px; font-weight:700;">
+            <span>🖨️</span> <span>પ્રિન્ટ કાઢો (Print All)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Color WhatsApp Bill Modal -->
+  <div id="colorBillModal" class="modal-overlay">
+    <div class="modal-content"
+      style="max-width:560px; width:95%; background:#1e293b; color:#ffffff; max-height:92vh; display:flex; flex-direction:column;">
+      <div class="modal-header"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.3rem;">📸</span>
+          <h3 style="margin:0; color:#fff;">કલર બિલ (WhatsApp ઈમેજ)</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('colorBillModal')">&times;</button>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:1rem; background:#0b0f19; display:flex; justify-content:center;">
+        <div id="colorBillContainer">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+      <div class="modal-footer"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('colorBillModal')">બંધ કરો</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-secondary btn-sm" onclick="downloadColorBillPNG()"
+            style="background:rgba(56, 189, 248, 0.15); color:#38bdf8; border-color:#38bdf8;">
+            <span>⬇️</span> <span>PNG ઈમેજ ડાઉનલોડ કરો</span>
+          </button>
+          <button id="colorBillWhatsAppBtn" class="btn btn-whatsapp btn-sm" onclick="sendColorBillWhatsApp()">
+            <span>💬</span> <span>WhatsApp ખોલો</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Calculate Monthly Bills & Numbering Modal -->
+  <div id="calculateBillsModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:560px; width:95%; background:#1e293b; color:#ffffff;">
+      <div class="modal-header"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.3rem;">⚡</span>
+          <h3 style="margin:0; color:#fff;">માસિક બિલ ગણતરી અને બિલ નંબરિંગ</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('calculateBillsModal')">&times;</button>
+      </div>
+      <div style="padding:1.2rem;">
+        <div id="calcModalExistingWarning"
+          style="display:none; background:rgba(239, 68, 68, 0.15); border:1.5px solid #ef4444; border-radius:6px; padding:10px 14px; margin-bottom:1rem; color:#fca5a5; font-size:0.88rem;">
+          <div style="font-weight:700; display:flex; align-items:center; gap:6px; margin-bottom:3px;">
+            <span>⚠️</span> <span>ધ્યાન આપો: આ મહિનાના બિલ પહેલેથી જ બનેલા છે!</span>
+          </div>
+          <div>ફરીથી ગણતરી કરવાથી જૂના બિલ ઓવરરાઈટ થશે અને પસંદ કરેલ ક્રમ મુજબ નવા બિલ નંબર લાઈનમાં અપાશે.</div>
+        </div>
+
+        <div
+          style="background:rgba(2,132,199,0.15); border:1px solid #0284c7; border-radius:6px; padding:10px 14px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:0.8rem; color:#94a3b8;">પસંદ કરેલ માસ અને વર્ષ:</div>
+            <b style="font-size:1.1rem; color:#38bdf8;" id="calcModalMonthYearText">ઓગસ્ટ - ૨૦૨૬</b>
+          </div>
+          <span class="badge badge-blue" style="font-size:0.8rem;">ઓટોમેટિક ગણતરી</span>
+        </div>
+
+        <!-- Bill Numbering & Sorting Strategy -->
+        <div class="form-group" style="margin-bottom:0.8rem;">
+          <label style="font-size:0.85rem; font-weight:600; color:#38bdf8;">બિલ નંબરિંગ અને ક્રમ ગોઠવણી (Sorting &
+            Numbering Order)</label>
+          <select id="calcModalSortBy" class="form-control">
+            <option value="salesman_delivery" selected>🚴‍♂️ ૧. વિતરક (Salesman) + ડિલિવરી ક્રમ મુજબ (દા.ત. ૧. રમેશભાઈના
+              ગ્રાહકો ૧,૨,૩... પછી ૨. મુકેશભાઈના...)</option>
+            <option value="collection_man_seq">💼 ૨. ઉઘરાણી સ્ટાફ (Collection Man) + ઉઘરાણી ક્રમ મુજબ (દા.ત. ૧. રમેશ
+              પરમારના ૧,૨,૩... પછી ૨. દિનેશ સોલંકીના...)</option>
+            <option value="route_delivery">🗺️ ૩. લાઇન (Route) + ડિલિવરી ક્રમ મુજબ</option>
+            <option value="delivery">🔢 ૪. સામાન્ય ડિલિવરી ક્રમ મુજબ</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0.8rem;">
+          <label style="font-size:0.85rem; font-weight:600;">બિલ નંબર ફોર્મેટ (Numbering Style)</label>
+          <select id="calcModalBillNoFormat" class="form-control" onchange="updateBillNoPreview('modal')">
+            <option value="sequential">સરળ ક્રમિક નંબર (દા.ત. 1001, 1002, 1003...)</option>
+            <option value="prefix_seq">પ્રીફિક્સ + ક્રમિક નંબર (દા.ત. PNS-1001)</option>
+            <option value="month_seq">માસ-વર્ષ + ક્રમિક નંબર (દા.ત. AUG26-001)</option>
+            <option value="cust_based">ગ્રાહક આઈડી આધારિત (દા.ત. B-08-208)</option>
+          </select>
+        </div>
+
+        <div class="form-grid" style="margin-bottom:0.8rem;">
+          <div class="form-group" id="calcModalPrefixGroup">
+            <label style="font-size:0.85rem; font-weight:600;">પ્રીફિક્સ (Prefix)</label>
+            <input type="text" id="calcModalBillNoPrefix" class="form-control" placeholder="PNS-, BILL-, INV-"
+              oninput="updateBillNoPreview('modal')">
+          </div>
+          <div class="form-group" id="calcModalStartNumGroup">
+            <label style="font-size:0.85rem; font-weight:600;">શરૂઆતનો નંબર (Starting No.)</label>
+            <input type="number" id="calcModalBillNoStartNum" class="form-control" value="1001"
+              oninput="updateBillNoPreview('modal')">
+          </div>
+        </div>
+
+        <div class="form-group" id="calcModalPaddingGroup" style="margin-bottom:1rem;">
+          <label style="font-size:0.85rem; font-weight:600;">અંકોની લંબાઈ (Digit Padding)</label>
+          <select id="calcModalBillNoPadding" class="form-control" onchange="updateBillNoPreview('modal')">
+            <option value="0">સામાન્ય (દા.ત. 1, 10, 100)</option>
+            <option value="3">૩ અંક (001, 002...)</option>
+            <option value="4" selected>૪ અંક (0001, 0002...)</option>
+            <option value="5">૫ અંક (00001, 00002...)</option>
+          </select>
+        </div>
+
+        <div
+          style="background:#0f172a; border:1.5px dashed #38bdf8; border-radius:6px; padding:10px 14px; margin-bottom:0.5rem;">
+          <div style="font-size:0.8rem; color:#94a3b8; margin-bottom:3px;">બિલ નંબર લાઈવ પ્રિવ્યૂ (Sample Preview):
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+            <span>પ્રથમ: <b style="color:#38bdf8; font-size:1.05rem;" id="modalBillNoPreview1">1001</b></span>
+            <span style="color:#64748b;">બીજું: <b style="color:#94a3b8;" id="modalBillNoPreview2">1002</b></span>
+            <span style="color:#64748b;">ત્રીજું: <b style="color:#94a3b8;" id="modalBillNoPreview3">1003</b></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('calculateBillsModal')">રદ કરો</button>
+        <button class="btn btn-primary" onclick="confirmGenerateMonthlyBills()"
+          style="padding:7px 20px; font-weight:700;">
+          <span>⚡</span> <span>બિલ ગણો (Generate Bills)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Edit Customer Bill Modal -->
+  <div id="editBillModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:580px; width:95%; background:#1e293b; color:#ffffff;">
+      <div class="modal-header"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.3rem;">✏️</span>
+          <h3 style="margin:0; color:#fff;">ગ્રાહકનું બિલ સુધારો (Edit Bill)</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('editBillModal')">&times;</button>
+      </div>
+      <div style="padding:1.2rem;">
+        <input type="hidden" id="editBillId">
+
+        <!-- Customer & Bill Info Banner -->
+        <div
+          style="background:rgba(15, 23, 42, 0.7); border:1px solid #334155; border-radius:8px; padding:12px 14px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <div>
+            <div style="font-size:0.75rem; color:#94a3b8;">ગ્રાહકનું નામ અને વિગત:</div>
+            <div style="font-weight:700; font-size:1.05rem; color:#f8fafc;" id="editBillCustomerNameDisplay">-</div>
+            <div style="font-size:0.8rem; color:#38bdf8;" id="editBillCustomerInfoDisplay">ID: #-- • લાઇન: --</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.75rem; color:#94a3b8;">બિલ નં. & મહિનો:</div>
+            <div>
+              <span class="badge badge-blue" id="editBillBillNoDisplay"
+                style="font-size:0.9rem; font-weight:700;">-</span>
+            </div>
+            <div style="font-size:0.8rem; color:#cbd5e1;" id="editBillMonthDisplay">-</div>
+          </div>
+        </div>
+
+        <!-- Editable Form Grid -->
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap:0.9rem; margin-bottom:1rem;">
+          <div class="form-group">
+            <label style="font-size:0.85rem; font-weight:600; color:#e2e8f0;">આવેલા દિવસ (Days Delivered)</label>
+            <input type="number" id="editBillDaysDelivered" class="form-control" min="0" max="31"
+              oninput="calculateEditBillTotals()">
+            <small style="font-size:0.75rem; color:#94a3b8;">મહિનામાં પેપર વિતરણ દિવસ</small>
+          </div>
+
+          <div class="form-group">
+            <label style="font-size:0.85rem; font-weight:600; color:#e2e8f0;">રજાના દિવસ (Vacation Days)</label>
+            <input type="number" id="editBillVacationDays" class="form-control" min="0" max="31"
+              oninput="calculateEditBillTotals()">
+            <small style="font-size:0.75rem; color:#94a3b8;">ગ્રાહકની રજાના કુલ દિવસ</small>
+          </div>
+
+          <div class="form-group">
+            <label style="font-size:0.85rem; font-weight:600; color:#e2e8f0;">ચાલુ મહિનાનું પેપર બિલ (₹)</label>
+            <input type="number" id="editBillCurrentAmount" class="form-control" min="0" step="1"
+              oninput="calculateEditBillTotals()" style="font-weight:600;">
+            <small style="font-size:0.75rem; color:#94a3b8;">આ માસના પેપરનો કુલ ચાર્જ</small>
+          </div>
+
+          <div class="form-group">
+            <label style="font-size:0.85rem; font-weight:600; color:#e2e8f0;">રજા કપાત રકમ (₹)</label>
+            <input type="number" id="editBillVacationDeduction" class="form-control" min="0" step="1"
+              style="color:#fb7185;">
+            <small style="font-size:0.75rem; color:#94a3b8;">દર્શાવવા માટે રજા કપાત</small>
+          </div>
+
+          <div class="form-group">
+            <label style="font-size:0.85rem; font-weight:600; color:#e2e8f0;">ડિલિવરી ચાર્જ (₹)</label>
+            <input type="number" id="editBillDelCharge" class="form-control" min="0" step="1"
+              oninput="calculateEditBillTotals()">
+            <small style="font-size:0.75rem; color:#94a3b8;">માસિક ડિલિવરી ફી</small>
+          </div>
+
+          <div class="form-group">
+            <label style="font-size:0.85rem; font-weight:600; color:#e2e8f0;">જૂની બાકી રકમ (Arrears ₹)</label>
+            <input type="number" id="editBillPastArrears" class="form-control" step="1"
+              oninput="calculateEditBillTotals()" style="font-weight:600;">
+            <small style="font-size:0.75rem; color:#94a3b8;">ગત માસની લેણી બાકી</small>
+          </div>
+        </div>
+
+        <!-- Total Payable Calculation Highlight Card -->
+        <div
+          style="background:rgba(14, 165, 233, 0.12); border:1.5px solid #0284c7; border-radius:8px; padding:12px; margin-bottom:1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-weight:700; color:#38bdf8; font-size:0.95rem;">કુલ ભરવાપાત્ર રકમ (Net Payable) ₹</span>
+            <span style="font-size:0.75rem; color:#94a3b8;">(ચાલુ બિલ + જૂની બાકી)</span>
+          </div>
+          <input type="number" id="editBillTotalPayable" class="form-control"
+            style="font-size:1.4rem; font-weight:800; color:#38bdf8; background:#0f172a; border:2px solid #38bdf8; text-align:center; padding:8px;"
+            step="1">
+        </div>
+
+        <!-- Reason / Notes -->
+        <div class="form-group">
+          <label style="font-size:0.85rem; font-weight:600; color:#cbd5e1;">સુધારાની નોંધ / કારણ (Reason / Note)</label>
+          <input type="text" id="editBillNotes" class="form-control"
+            placeholder="દા.ત. આઇટમ પસંદ ન હતી તેથી ૩૦ દિવસનું બિલ મેન્યુઅલ કર્યું">
+        </div>
+      </div>
+
+      <div class="modal-footer"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('editBillModal')">❌ રદ કરો</button>
+        <button class="btn btn-primary" onclick="saveEditedBill()"
+          style="background:#10b981; border-color:#059669; padding:8px 24px; font-weight:700;">
+          <span>💾</span> <span>સુધારો સાચવો (Save Changes)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- 11. Add Expense Modal -->
+  <div id="addExpenseModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:520px; width:95%; background:#1e293b; color:#ffffff;">
+      <div class="modal-header"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.3rem;">💸</span>
+          <h3 style="margin:0; color:#fff;" id="expenseModalTitle">નવો ખર્ચ નોંધો (Add Expense)</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('addExpenseModal')">&times;</button>
+      </div>
+      <form id="expenseForm" onsubmit="saveExpense(event)">
+        <input type="hidden" id="expenseId">
+        <div style="padding:1.2rem;">
+          <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:0.8rem;">
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">તારીખ (Date)</label>
+              <input type="date" id="expDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">ખર્ચનો પ્રકાર (Category)</label>
+              <select id="expCategory" class="form-control" onchange="onExpenseCategoryChange()" required>
+                <option value="petrol">🛵 પેટ્રોલ / વ્હીકલ ખર્ચ</option>
+                <option value="rent">🏢 ઓફિસ / દુકાન ભાડું</option>
+                <option value="stationery">✏️ સ્ટેશનરી / પ્રિન્ટિંગ</option>
+                <option value="tea_snacks">☕ ચા-નાસ્તો / રિફ્રેશમેન્ટ</option>
+                <option value="salary">💼 સ્ટાફ પગાર (Salary)</option>
+                <option value="bank_charges">🏦 બેંક ચાર્જ / ફી</option>
+                <option value="other">📦 અન્ય પરચુરણ ખર્ચ</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" id="expStaffSelectGroup" style="display:none; margin-bottom:0.8rem;">
+            <label style="font-size:0.85rem; font-weight:600; color:#38bdf8;">સ્ટાફ પસંદ કરો (Staff Member)</label>
+            <select id="expStaffSelect" class="form-control" onchange="onExpenseStaffSelectChange()">
+              <!-- Injected via JS -->
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom:0.8rem;">
+            <label style="font-size:0.85rem; font-weight:600;">વિગત / કોને ચૂકવ્યા (Payee / Description)</label>
+            <input type="text" id="expPayeeName" class="form-control"
+              placeholder="દા.ત. ઈન્ડિયન ઓઈલ પેટ્રોલ પંપ, મકાન માલિક, રામ સ્ટેશનરી..." required>
+          </div>
+
+          <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:0.8rem;">
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600; color:#fb7185;">રકમ (Amount ₹)</label>
+              <input type="number" id="expAmount" class="form-control" min="1" step="1" placeholder="500" required
+                style="font-size:1.1rem; font-weight:700;">
+            </div>
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">ચુકવણી મોડ (Payment Mode)</label>
+              <select id="expPaymentMode" class="form-control" onchange="onExpensePaymentModeChange()">
+                <option value="cash">💵 રોકડ (Cash)</option>
+                <option value="bank">🏦 બેંક ટ્રાન્સફર / UPI</option>
+                <option value="cheque">📝 ચેક (Cheque)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" id="expBankAccountGroup" style="display:none; margin-bottom:0.8rem;">
+            <label style="font-size:0.85rem; font-weight:600;">બેંક એકાઉન્ટ (Bank Account)</label>
+            <select id="expBankAccountId" class="form-control">
+              <!-- Injected via JS -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label style="font-size:0.85rem; font-weight:600;">ખાસ નોંધ / બિલ નં. (Notes)</label>
+            <input type="text" id="expNotes" class="form-control" placeholder="વાઉચર નં., બિલ વિગત...">
+          </div>
+        </div>
+        <div class="modal-footer"
+          style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('addExpenseModal')">રદ કરો</button>
+          <button type="submit" class="btn btn-primary" style="padding:7px 20px; font-weight:700;">
+            <span>💾</span> <span>ખર્ચ સાચવો (Save Expense)</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 12. Add Bank Account Modal -->
+  <div id="addBankModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:480px; width:95%; background:#1e293b; color:#ffffff;">
+      <div class="modal-header"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.3rem;">🏦</span>
+          <h3 style="margin:0; color:#fff;" id="bankModalTitle">બેંક એકાઉન્ટ / કેશ કાઉન્ટર ઉમેરો</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('addBankModal')">&times;</button>
+      </div>
+      <form id="bankForm" onsubmit="saveBankAccount(event)">
+        <input type="hidden" id="bankAccountId">
+        <div style="padding:1.2rem;">
+          <div class="form-group" style="margin-bottom:0.8rem;">
+            <label style="font-size:0.85rem; font-weight:600;">એકાઉન્ટનો પ્રકાર</label>
+            <select id="bankType" class="form-control">
+              <option value="bank">🏦 બેંક ખાતું (Bank Current/Savings)</option>
+              <option value="cash">💵 રોકડ કાઉન્ટર (Cash Counter / Drawer)</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0.8rem;">
+            <label style="font-size:0.85rem; font-weight:600;">બેંક / ખાતાનું નામ</label>
+            <input type="text" id="bankName" class="form-control"
+              placeholder="દા.ત. State Bank of India, HDFC Bank, મેઇન કેશ બોક્સ" required>
+          </div>
+          <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:0.8rem;">
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">ખાતા નંબર (A/C No.)</label>
+              <input type="text" id="bankAccountNo" class="form-control" placeholder="30284918231">
+            </div>
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">બ્રાન્ચ (Branch)</label>
+              <input type="text" id="bankBranch" class="form-control" placeholder="રાજકોટ મેઇન">
+            </div>
+          </div>
+          <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:0.8rem;">
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">IFSC કોડ</label>
+              <input type="text" id="bankIFSC" class="form-control" placeholder="SBIN0001234">
+            </div>
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600; color:#34d399;">શરૂઆતની બાકી (Opening Bal. ₹)</label>
+              <input type="number" id="bankOpeningBal" class="form-control" value="0" step="1">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"
+          style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('addBankModal')">રદ કરો</button>
+          <button type="submit" class="btn btn-primary" style="padding:7px 20px; font-weight:700;">
+            <span>💾</span> <span>ખાતું સાચવો (Save Bank)</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 13. Bank Transaction Modal (Deposit / Withdrawal) -->
+  <div id="bankTxModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:480px; width:95%; background:#1e293b; color:#ffffff;">
+      <div class="modal-header"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.3rem;">💳</span>
+          <h3 style="margin:0; color:#fff;">બેંક ટ્રાન્ઝેક્શન (Deposit / Withdrawal)</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('bankTxModal')">&times;</button>
+      </div>
+      <form id="bankTxForm" onsubmit="saveBankTransaction(event)">
+        <div style="padding:1.2rem;">
+          <div class="form-group" style="margin-bottom:0.8rem;">
+            <label style="font-size:0.85rem; font-weight:600;">બેંક એકાઉન્ટ</label>
+            <select id="txBankId" class="form-control" required>
+              <!-- Injected via JS -->
+            </select>
+          </div>
+          <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:0.8rem;">
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">પ્રકાર (Type)</label>
+              <select id="txType" class="form-control">
+                <option value="deposit">📥 જમા કર્યો (Deposit / Cash In)</option>
+                <option value="withdrawal">📤 ઉપાડ્યો (Withdrawal / Cash Out)</option>
+                <option value="bank_charge">🏦 બેંક ચાર્જિસ (Charges)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">તારીખ</label>
+              <input type="date" id="txDate" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:0.8rem;">
+            <label style="font-size:0.85rem; font-weight:600; color:#38bdf8;">રકમ (Amount ₹)</label>
+            <input type="number" id="txAmount" class="form-control" min="1" step="1" required
+              style="font-size:1.15rem; font-weight:700;">
+          </div>
+          <div class="form-group">
+            <label style="font-size:0.85rem; font-weight:600;">વિગત / નોંધ (Description)</label>
+            <input type="text" id="txDescription" class="form-control" placeholder="રોકડ જમા કરી, ચેક નં. વગેરે...">
+          </div>
+        </div>
+        <div class="modal-footer"
+          style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('bankTxModal')">રદ કરો</button>
+          <button type="submit" class="btn btn-primary" style="padding:7px 20px; font-weight:700;">
+            <span>💾</span> <span>ટ્રાન્ઝેક્શન સાચવો</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 14. Staff Salary Modal -->
+  <div id="staffSalaryModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:520px; width:95%; background:#1e293b; color:#ffffff;">
+      <div class="modal-header"
+        style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.3rem;">💼</span>
+          <h3 style="margin:0; color:#fff;">સ્ટાફ પગાર ચુકવણી (Staff Salary Payout)</h3>
+        </div>
+        <button class="modal-close" onclick="closeModal('staffSalaryModal')">&times;</button>
+      </div>
+      <form id="staffSalaryForm" onsubmit="saveStaffSalary(event)">
+        <div style="padding:1.2rem;">
+          <div class="form-group" style="margin-bottom:0.8rem;">
+            <label style="font-size:0.85rem; font-weight:600; color:#38bdf8;">સ્ટાફ પસંદ કરો (Salesman / Collection
+              Staff)</label>
+            <select id="salaryStaffSelect" class="form-control" required onchange="onSalaryStaffSelectChange()">
+              <!-- Injected via JS -->
+            </select>
+          </div>
+          <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:0.8rem;">
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">કયા માસનો પગાર (Month)</label>
+              <input type="month" id="salaryMonth" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">ચુકવણી તારીખ (Pay Date)</label>
+              <input type="date" id="salaryDate" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:0.8rem;">
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">માસિક પગાર (Salary ₹)</label>
+              <input type="number" id="salaryBaseAmount" class="form-control" min="0" step="1"
+                oninput="calculateSalaryNet()" required>
+            </div>
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">ઉપાડ કપાત / એડવાન્સ (₹)</label>
+              <input type="number" id="salaryDeduction" class="form-control" min="0" step="1" value="0"
+                oninput="calculateSalaryNet()">
+            </div>
+          </div>
+          <div
+            style="background:rgba(16,185,129,0.12); border:1.5px solid #10b981; border-radius:8px; padding:10px 14px; margin-bottom:0.8rem; display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-weight:700; color:#34d399;">કુલ ચૂકવવાપાત્ર નેટ પગાર (Net Payout):</span>
+            <b style="font-size:1.35rem; color:#34d399;" id="salaryNetDisplay">₹0</b>
+          </div>
+          <div class="form-grid" style="grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:0.8rem;">
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">ચુકવણી મોડ</label>
+              <select id="salaryPayMode" class="form-control">
+                <option value="cash">💵 રોકડ (Cash)</option>
+                <option value="bank">🏦 બેંક ટ્રાન્સફર / UPI</option>
+                <option value="cheque">📝 ચેક (Cheque)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label style="font-size:0.85rem; font-weight:600;">નોંધ / વાઉચર નં.</label>
+              <input type="text" id="salaryNotes" class="form-control" placeholder="સહી લીધેલ છે / રસીદ નં.">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer"
+          style="border-color:var(--border-glass); display:flex; justify-content:space-between; align-items:center;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('staffSalaryModal')">રદ
+            કરો</button>
+          <button type="submit" class="btn btn-primary"
+            style="background:#10b981; border-color:#059669; padding:7px 20px; font-weight:700;">
+            <span>💾</span> <span>પગાર ચુકવણી સાચવો</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- WhatsApp Express Dispatcher Modal (Semi-Automated Fast Queue) -->
+  <div id="whatsAppExpressModal" class="modal-overlay" style="z-index: 10500;">
+    <div class="modal-content" style="max-width: 1050px; width: 95%; max-height: 94vh; display: flex; flex-direction: column; padding: 0; overflow: hidden; background: #0f172a; border: 1px solid #334155; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);">
+      
+      <!-- Modal Header -->
+      <div style="padding: 14px 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 38px; height: 38px; border-radius: 8px; background: rgba(34,197,94,0.15); border: 1px solid #22c55e; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+            🚀
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem; color: #f8fafc; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+              WhatsApp Express બિલ ડિસ્પેચર
+              <span style="font-size: 0.72rem; background: #22c55e; color: #022c22; font-weight: 800; padding: 2px 7px; border-radius: 10px; text-transform: uppercase;">ઓટો-ક્યૂ ⚡</span>
+            </h3>
+            <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #94a3b8;">
+              Spacebar અથવા Enter દબાવીને એક પછી એક ગ્રાહકને માત્ર ૧ ક્લિકમાં બિલ WhatsApp કરો
+            </p>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal('whatsAppExpressModal')" style="font-size: 1.5rem; color: #94a3b8; background: transparent; border: none; cursor: pointer; padding: 4px 8px;">&times;</button>
+      </div>
+
+      <!-- Control Toolbar & Filter Bar -->
+      <div style="padding: 10px 20px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;">
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <label style="font-size: 0.82rem; color: #94a3b8; font-weight: 600;">લાઇન:</label>
+            <select id="waQueueRouteSelect" class="form-control" style="width: 150px; padding: 4px 8px; font-size: 0.85rem;" onchange="onWhatsAppQueueFilterChange()">
+              <option value="all">બધી લાઇન</option>
+            </select>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <label style="font-size: 0.82rem; color: #94a3b8; font-weight: 600;">સ્થિતિ:</label>
+            <select id="waQueueStatusSelect" class="form-control" style="width: 160px; padding: 4px 8px; font-size: 0.85rem;" onchange="onWhatsAppQueueFilterChange()">
+              <option value="pending_only" selected>⏳ માત્ર બાકી બિલ (Pending)</option>
+              <option value="all">📋 બધા બિલ (All)</option>
+              <option value="sent_only">✅ મોકલાઈ ગયેલ (Sent)</option>
+            </select>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <label style="font-size: 0.82rem; color: #94a3b8; font-weight: 600;">મોકલવાની રીત:</label>
+            <select id="waQueueModeSelect" class="form-control" style="width: 190px; padding: 4px 8px; font-size: 0.85rem; border-color: #22c55e; color: #22c55e; font-weight: 700;">
+              <option value="web_direct" selected>🌐 WhatsApp Web (એક જ ટેબમાં)</option>
+              <option value="app_direct">💻 WhatsApp Desktop App</option>
+              <option value="wame">🔗 wa.me Link</option>
+            </select>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <label style="font-size: 0.82rem; color: #94a3b8; font-weight: 600;">ફોર્મેટ:</label>
+            <select id="waQueueFormatSelect" class="form-control" style="width: 185px; padding: 4px 8px; font-size: 0.85rem; border-color: #38bdf8; color: #38bdf8; font-weight: 700;">
+              <option value="image_only" selected>🖼️ માત્ર બિલ ફોટો (Image Only)</option>
+              <option value="photo_and_text">🖼️+📝 ફોટો + ટેક્સ્ટ</option>
+              <option value="text_link">📝 ટેક્સ્ટ + લિંક</option>
+            </select>
+          </div>
+
+          <input type="text" id="waQueueSearchInput" class="form-control" style="width: 110px; padding: 4px 8px; font-size: 0.85rem;" placeholder="🔍 શોધો..." oninput="onWhatsAppQueueFilterChange()">
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div id="waExtensionStatusBadge" style="display: flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 700; background: rgba(30,41,59,0.9); padding: 4px 10px; border-radius: 12px; border: 1px solid #475569; color: #94a3b8;">
+            <span id="waExtensionDot" style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; display: inline-block;"></span>
+            <span id="waExtensionStatusText">WhatsApp Extension કનેક્ટ થઈ રહ્યું છે...</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <label style="font-size: 0.82rem; color: #94a3b8; font-weight: 600;">સ્પીડ:</label>
+            <select id="waQueueDelaySelect" class="form-control" style="width: 135px; padding: 4px 6px; font-size: 0.82rem;">
+              <option value="2000">⚡ ફાસ્ટ (૨ સે.)</option>
+              <option value="3500" selected>⚖️ સામાન્ય (૩.૫ સે.)</option>
+              <option value="5000">🛡️ સુરક્ષિત (૫ સે.)</option>
+            </select>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="resetWhatsAppQueueProgress()" style="font-size: 0.78rem; padding: 4px 10px; color: #f59e0b; border-color: rgba(245,158,11,0.3);" title="આ મહિનાના સેન્ટ સ્ટેટસ રીસેટ કરો">
+            🔄 સ્ટેટસ રીસેટ
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Progress Strip -->
+      <div style="padding: 8px 20px; background: rgba(15, 23, 42, 0.95); border-bottom: 1px solid #1e293b;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
+          <span style="color: #cbd5e1;">
+            પ્રગતિ: <b id="waQueueSentCount" style="color: #22c55e;">0</b> / <span id="waQueueTotalCount">0</span> મોકલાયા (<span id="waQueuePercent" style="font-weight: 700; color: #38bdf8;">0%</span>)
+          </span>
+          <span style="color: #94a3b8;">
+            ક્યૂમાં બાકી: <b id="waQueuePendingCount" style="color: #f59e0b;">0</b>
+          </span>
+        </div>
+        <div style="width: 100%; height: 6px; background: #334155; border-radius: 3px; overflow: hidden;">
+          <div id="waQueueProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #22c55e, #38bdf8); transition: width 0.3s ease;"></div>
+        </div>
+      </div>
+
+      <!-- Modal Body (Split 2-Column Grid) -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px 20px; overflow-y: auto; flex: 1;">
+        
+        <!-- Left Panel: Current Customer & Instant Fire Actions -->
+        <div style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+          
+          <!-- Customer Details Card -->
+          <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 8px; margin-bottom: 10px;">
+              <span style="background: #38bdf8; color: #082f49; font-weight: 800; font-size: 0.78rem; padding: 2px 8px; border-radius: 4px;" id="waQueueSeqBadge">
+                ક્રમ: #-
+              </span>
+              <span style="font-size: 0.82rem; color: #94a3b8; font-weight: 600;">
+                ક્યૂ સ્થિતિ: <b id="waQueuePosDisplay" style="color: #f8fafc;">0 / 0</b>
+              </span>
+            </div>
+
+            <div style="margin-bottom: 8px;">
+              <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;">ગ્રાહકનું નામ:</div>
+              <h2 id="waQueueCustName" style="margin: 2px 0 0 0; font-size: 1.25rem; color: #f8fafc; font-weight: 800;">-</h2>
+              <div id="waQueueCustAddress" style="font-size: 0.85rem; color: #cbd5e1; margin-top: 2px;">-</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #0f172a; border-radius: 6px; padding: 8px; margin-bottom: 10px; font-size: 0.82rem;">
+              <div>
+                <span style="color: #94a3b8;">મોબાઈલ / WA:</span><br>
+                <b id="waQueueCustMobile" style="color: #22c55e; font-size: 0.95rem;">-</b>
+              </div>
+              <div style="text-align: right;">
+                <span style="color: #94a3b8;">બિલ નં. / માસ:</span><br>
+                <b id="waQueueBillMeta" style="color: #f8fafc;">-</b>
+              </div>
+            </div>
+
+            <!-- Total Amount Due Highlight -->
+            <div style="background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(6,182,212,0.15)); border: 1.5px solid rgba(34,197,94,0.4); border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-size: 0.75rem; color: #cbd5e1; text-transform: uppercase; font-weight: 700;">કુલ ભરવાપાત્ર રકમ (Net Due)</div>
+                <div style="font-size: 0.75rem; color: #94a3b8;">(પેપર + બાકી + સર્વિસ ચાર્જ)</div>
+              </div>
+              <div id="waQueueBillTotal" style="font-size: 1.85rem; font-weight: 900; color: #22c55e;">₹0</div>
+            </div>
+          </div>
+
+          <!-- Fire WhatsApp Action Buttons -->
+          <div>
+            <!-- 1-Click Auto Dispatch Loop Button -->
+            <button id="waQueueAutoLoopBtn" class="btn btn-lg" onclick="toggleWhatsAppAutoLoop()"
+              style="width: 100%; background: linear-gradient(135deg, #0284c7, #0369a1); border: none; color: #ffffff; font-size: 1.05rem; font-weight: 800; padding: 12px 16px; border-radius: 10px; margin-bottom: 8px; box-shadow: 0 4px 16px rgba(2,132,199,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;">
+              <span>⚡</span>
+              <span id="waQueueAutoLoopBtnText">૮૦૦ બિલ સિંગલ ટેબમાં ઓટો-સેન્ડ શરૂ કરો (Auto Loop)</span>
+            </button>
+
+            <!-- Single-Action Step Fire Button -->
+            <button id="waQueueSendBtn" class="btn btn-lg" onclick="sendWhatsAppQueueNext()"
+              style="width: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); border: none; color: #ffffff; font-size: 1.05rem; font-weight: 800; padding: 12px 16px; border-radius: 10px; margin-bottom: 8px; box-shadow: 0 4px 16px rgba(34,197,94,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;">
+              <span>💬</span>
+              <span>હાલનું બિલ મોકલો (Spacebar / Enter)</span>
+              <span>🚀</span>
+            </button>
+
+            <!-- Navigation and Tool Sub-actions -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+              <button class="btn btn-secondary" onclick="prevWhatsAppQueue()" style="font-size: 0.82rem; padding: 7px; justify-content: center;">
+                ⏮️ અગાઉનો (←)
+              </button>
+              <button class="btn btn-secondary" onclick="skipWhatsAppQueue()" style="font-size: 0.82rem; padding: 7px; justify-content: center;">
+                ⏭️ સ્કીપ કરો (→)
+              </button>
+              <button class="btn btn-secondary" onclick="downloadCurrentQueueBillPNG()" style="font-size: 0.82rem; padding: 7px; justify-content: center; color: #38bdf8; border-color: rgba(56,189,248,0.4);">
+                📸 PNG ડાઉનલોડ
+              </button>
+            </div>
+
+            <!-- Copy Image to Clipboard & Mark Sent -->
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; border-radius: 6px; padding: 6px 12px; font-size: 0.82rem;">
+              <button class="btn btn-secondary btn-sm" onclick="copyCurrentQueueBillImage()" style="font-size: 0.78rem; padding: 3px 8px; color: #a78bfa; border-color: rgba(167,139,250,0.3);">
+                📋 બિલ ઈમેજ કોપી (Ctrl+V પેસ્ટ માટે)
+              </button>
+              <label style="display: flex; align-items: center; gap: 6px; color: #cbd5e1; cursor: pointer; font-size: 0.82rem;">
+                <input type="checkbox" id="waQueueMarkSentCheckbox" onchange="toggleCurrentBillSentStatus(this.checked)">
+                <span>મોકલાઈ ગયેલ ગણો</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Shortcuts Hint Callout -->
+          <div style="background: rgba(30,41,59,0.7); border: 1px dashed #475569; border-radius: 6px; padding: 8px 12px; font-size: 0.76rem; color: #94a3b8; line-height: 1.4;">
+            💡 <b>સુપર ફાસ્ટ શોર્ટકટ્સ:</b> કીબોર્ડ પર <b>[Spacebar]</b> અથવા <b>[Enter]</b> દબાવતા જ આ ગ્રાહકનું WhatsApp ખૂલશે અને ક્યૂ આગળ વધી જશે! <b>[→ જમણું એરો]</b> = સ્કીપ, <b>[← ડાબું એરો]</b> = અગાઉનું.
+          </div>
+
+        </div>
+
+        <!-- Right Panel: Live Visual Bill Image Preview -->
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; max-height: 600px;">
+          <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 6px; margin-bottom: 10px;">
+            <span style="font-size: 0.82rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;">
+              🖼️ બિલ ઈમેજ લાઇવ પ્રિવ્યૂ
+            </span>
+            <span id="waQueueSentBadge" style="display: none; background: rgba(34,197,94,0.2); color: #22c55e; border: 1px solid #22c55e; font-size: 0.7rem; font-weight: 800; padding: 1px 6px; border-radius: 4px;">
+              ✓ મોકલાઈ ગયેલ
+            </span>
+          </div>
+
+          <div id="waQueueBillPreviewContainer" style="display: flex; justify-content: center; width: 100%; transform: scale(0.92); transform-origin: top center;">
+            <!-- Live rendered bill card -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Global Processing / Loading Overlay -->
+  <div id="globalLoadingOverlay" class="global-loading-overlay">
+    <div class="global-loading-box">
+      <div class="loading-spinner"></div>
+      <h3 id="globalLoadingTitle" style="margin:14px 0 6px 0; color:#38bdf8; font-size:1.15rem;">કૃપા કરીને રાહ જુઓ...
+      </h3>
+      <p id="globalLoadingText" style="margin:0; color:#cbd5e1; font-size:0.9rem;">માસિક બિલ ગણતરી અને પ્રોસેસિંગ ચાલુ
+        છે...</p>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="js/i18n.js?v=43"></script>
+  <script src="js/db.js?v=43"></script>
+  <script src="js/qrcode.js?v=43"></script>
+  <script src="js/app.js?v=43"></script>
+</body>
+
+</html>
