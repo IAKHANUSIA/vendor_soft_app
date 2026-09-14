@@ -13,6 +13,13 @@ publish/
 *.user
 *.suo
 
+# Android build artifacts
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+
 # OS files
 Thumbs.db
 ehthumbs.db
