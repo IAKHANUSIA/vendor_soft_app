@@ -2,6 +2,27 @@
 let currentActiveView = "dashboard";
 let cachedAgency = null;
 
+// Mobile Sidebar Toggle
+function toggleMobileSidebar() {
+  const sidebar = document.querySelector('.mobile-sidebar');
+  const backdrop = document.querySelector('.mobile-sidebar-backdrop');
+  const hamburger = document.querySelector('.hamburger-btn');
+  if (!sidebar || !backdrop) return;
+  const isOpen = sidebar.classList.contains('active');
+  if (isOpen) {
+    sidebar.classList.remove('active');
+    backdrop.classList.remove('active');
+    if (hamburger) hamburger.classList.remove('active');
+    document.body.style.overflow = '';
+  } else {
+    sidebar.classList.add('active');
+    backdrop.classList.add('active');
+    if (hamburger) hamburger.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+window.toggleMobileSidebar = toggleMobileSidebar;
+
 // Global date display formatter — always dd/mm/yyyy
 function formatDisplayDate(dateStr) {
   if (!dateStr) return "";
@@ -84,6 +105,16 @@ function switchView(viewName) {
 
   // Update Mobile Bottom Bar
   document.querySelectorAll(".mobile-nav-bar .mobile-nav-item").forEach(btn => {
+    const onclickAttr = btn.getAttribute("onclick") || "";
+    if (onclickAttr.includes(`'${viewName}'`)) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
+  // Update Mobile Sidebar Overlay
+  document.querySelectorAll(".mobile-sidebar .nav-item").forEach(btn => {
     const onclickAttr = btn.getAttribute("onclick") || "";
     if (onclickAttr.includes(`'${viewName}'`)) {
       btn.classList.add("active");

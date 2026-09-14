@@ -27,6 +27,10 @@
       </div>
     </div>
 
+    <button class="hamburger-btn no-print" onclick="toggleMobileSidebar()" aria-label="Open Menu">
+      <span></span><span></span><span></span>
+    </button>
+
     <div class="header-actions">
       <div class="offline-pill">
         <span class="pulse-dot"></span>
@@ -1227,6 +1231,63 @@
       <span data-i18n="navPayments">ઉઘરાણી</span>
     </button>
   </nav>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="mobile-sidebar-backdrop no-print" onclick="toggleMobileSidebar()"></div>
+  <aside class="mobile-sidebar no-print">
+    <div class="mobile-sidebar-header">
+      <h2>📰 Vendor Soft</h2>
+      <button class="mobile-sidebar-close" onclick="toggleMobileSidebar()">✕</button>
+    </div>
+    <button class="nav-item active" onclick="switchView('dashboard');toggleMobileSidebar()">
+      <span class="nav-icon">📊</span>
+      <span data-i18n="navDashboard">ડેશબોર્ડ</span>
+    </button>
+    <button class="nav-item" onclick="switchView('daily');toggleMobileSidebar()">
+      <span class="nav-icon">🛵</span>
+      <span data-i18n="navDailyDelivery">રોજનું સેલ</span>
+    </button>
+    <button class="nav-item" onclick="switchView('depot');toggleMobileSidebar()">
+      <span class="nav-icon">🏬</span>
+      <span data-i18n="navDepot">આવતીકાલની ખરીદી</span>
+    </button>
+    <button class="nav-item" onclick="switchView('customers');toggleMobileSidebar()">
+      <span class="nav-icon">👥</span>
+      <span data-i18n="navCustomers">ગ્રાહક માસ્ટર</span>
+    </button>
+    <button class="nav-item" onclick="switchView('vacations');toggleMobileSidebar()">
+      <span class="nav-icon">🌴</span>
+      <span data-i18n="navVacation">રજા કેલેન્ડર</span>
+    </button>
+    <button class="nav-item" onclick="switchView('billing');toggleMobileSidebar()">
+      <span class="nav-icon">🧾</span>
+      <span data-i18n="navBilling">મહિનાનું બિલિંગ</span>
+    </button>
+    <button class="nav-item" onclick="switchView('payments');toggleMobileSidebar()">
+      <span class="nav-icon">💰</span>
+      <span data-i18n="navPayments">ઉઘરાણી અને UPI</span>
+    </button>
+    <button class="nav-item" onclick="switchView('items');toggleMobileSidebar()">
+      <span class="nav-icon">📰</span>
+      <span data-i18n="navItems">પેપર માસ્ટર</span>
+    </button>
+    <button class="nav-item" onclick="switchView('routes');toggleMobileSidebar()">
+      <span class="nav-icon">🗺️</span>
+      <span data-i18n="navRoutes">છાપાં વિતરક</span>
+    </button>
+    <button class="nav-item" onclick="switchView('reports');toggleMobileSidebar()">
+      <span class="nav-icon">📚</span>
+      <span data-i18n="navReports">ખાતાવહી અને હિસાબ</span>
+    </button>
+    <button class="nav-item" onclick="switchView('expenses');toggleMobileSidebar()">
+      <span class="nav-icon">💸</span>
+      <span data-i18n="navExpenses">ખર્ચ અને બેંક</span>
+    </button>
+    <button class="nav-item" onclick="switchView('settings');toggleMobileSidebar()">
+      <span class="nav-icon">⚙️</span>
+      <span data-i18n="navSettings">સેટિંગ્સ અને બેકઅપ</span>
+    </button>
+  </aside>
 
   <!-- ================= MODALS ================= -->
 
